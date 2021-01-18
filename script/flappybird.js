@@ -45,6 +45,11 @@ function create () {
     callbackScope: this,
     loop: true,
   });
+
+  // Affichage du score
+  let style = { font: '20px Arial', fill: '#fff' };
+  score = 0;
+  this.scoreText = this.add.text(20, 20, score, style);
 }
 
 function update () {
@@ -79,4 +84,6 @@ function nouvelleColonne() {
     }
   }
   tuyau.setVelocityX(-200); // Fait défiler des tuyaux vers la gauche
+  score += 1;
+  this.scoreText.setText(score);
 }
