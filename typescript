@@ -1,0 +1,39 @@
+Script started on 2021-01-18 13:20:48+01:00 [TERM="xterm-256color" TTY="/dev/pts/0" COLUMNS="80" LINES="24"]
+script/flappybird.js _________________________________________
+/ >J'ai lu quelque part qu'il y avait une \
+| maniere d'avoir des ACL avec >Ext2fs.   |
+| Ca se passe comment ?                   |
+|                                         |
+| Ca se passe bien. -+- Rémy in Guide du  |
+| linuxien pervers - "Le serpent de mer   |
+\ repointe son nez"                       /
+ -----------------------------------------
+    \                                  ___-------___
+     \                             _-~~             ~~-_
+      \                         _-~                    /~-_
+             /^\__/^\         /~  \                   /    \
+           /|  O|| O|        /      \_______________/        \
+          | |___||__|      /       /                \          \
+          |          \    /      /                    \          \
+          |   (_______) /______/                        \_________ \
+          |         / /         \                      /            \
+           \         \^\\         \                  /               \     /
+             \         ||           \______________/      _-_       //\__//
+               \       ||------_-~~-_ ------------- \ --/~   ~\    || __/
+                 ~-----||====/~     |==================|       |/~~~~~
+                  (_(__/  ./     /                    \_\      \.
+                         (_(___/                         \_____)_)
+]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ script/flappybird.js[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K[K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ [K]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ touch index.html
+]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ ll
+total 32K
+drwxr-xr-x 28 hugues hugues 4,0K janv. 18 13:15 [0m[01;34m..[0m
+-rw-rw-r--  1 hugues hugues   56 janv. 18 13:15 README.md
+drwxrwxr-x 27 hugues hugues 4,0K janv. 18 13:17 [01;34mnode_modules[0m
+-rw-rw-r--  1 hugues hugues 7,0K janv. 18 13:17 package-lock.json
+-rw-rw-r--  1 hugues hugues   14 janv. 18 13:19 .gitignore
+drwxrwxr-x  8 hugues hugues 4,0K janv. 18 13:19 [01;34m.git[0m
+-rw-rw-r--  1 hugues hugues    0 janv. 18 13:20 typescript
+-rw-rw-r--  1 hugues hugues    0 janv. 18 13:21 index.html
+drwxrwxr-x  4 hugues hugues 4,0K janv. 18 13:21 [01;34m.[0m
+]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[01;34m/var/www/html/flappybird2[00m$ lltouch index.html
+]0;hugues@xig: /var/www/html/flappybird2[01;32mhugues@xig[00m:[
