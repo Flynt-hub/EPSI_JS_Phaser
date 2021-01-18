@@ -21,6 +21,7 @@ var config = {
 // Variables globales
 var game = new Phaser.Game(config);
 var tuyau;
+var pointeur;
 
 function preload () {
   // C'est là qu'on vas charger les images et les sons
@@ -37,6 +38,8 @@ function create () {
 
   // Écoute la touche espace
   espace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+  // Écoute le tap (ou le clic)
+  pointeur = this.input.activePointer;
 
   // Appel la fonction nouvelleColonne toutes les 1,5 secondes
   genereTuyaux = this.time.addEvent({
@@ -61,7 +64,7 @@ function update () {
   }
 
   // Si on appuie sur "espace"
-  if (Phaser.Input.Keyboard.JustDown(espace)) {
+  if (Phaser.Input.Keyboard.JustDown(espace) || pointeur.isDown) {
     piaf.setVelocityY(-350); // on envoie piaf vers le haut
     this.sound.play('jump'); // Chpoing
   }
@@ -69,6 +72,11 @@ function update () {
   // Colision Oiseau / colonne
   if(this.physics.collide(piaf, tuyau)) {
     this.scene.restart(); // On relance le jeu
+  }
+
+  // L'oiseau penche quand il tombe
+  if (piaf.angle < 20) {
+    piaf.angle += 1;
   }
 }
 
