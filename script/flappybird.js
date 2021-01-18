@@ -53,6 +53,9 @@ function create () {
   let style = { font: '20px Arial', fill: '#fff' };
   score = 0;
   this.scoreText = this.add.text(20, 20, score, style);
+
+  // Par défaut : on est vivant
+  piaf.alive = true;
 }
 
 function update () {
@@ -63,15 +66,23 @@ function update () {
     this.scene.restart(); // On redémare
   }
 
-  // Si on appuie sur "espace"
-  if (Phaser.Input.Keyboard.JustDown(espace) || pointeur.isDown) {
-    piaf.setVelocityY(-350); // on envoie piaf vers le haut
-    this.sound.play('jump'); // Chpoing
+  // Si mort on ne saute plus !
+  if(piaf.alive) {
+    // Si on appuie sur "espace"
+    if (Phaser.Input.Keyboard.JustDown(espace) || pointeur.isDown) {
+      piaf.setVelocityY(-350); // on envoie piaf vers le haut
+      this.sound.play('jump'); // Chpoing
+      piaf.angle = -20; // Redresse !
+    }
   }
 
   // Colision Oiseau / colonne
   if(this.physics.collide(piaf, tuyau)) {
-    this.scene.restart(); // On relance le jeu
+    if(piaf.alive == false) {
+      // Si déjà mort : on n'en rajoute pas
+      return;
+    }
+    piaf.alive = false; // on le tue
   }
 
   // L'oiseau penche quand il tombe
