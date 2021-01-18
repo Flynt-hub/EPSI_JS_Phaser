@@ -1,0 +1,21 @@
+version: '3'
+
+
+services:
+  apache:
+    image: php-pdo
+    user: "1000:1000"
+    sysctls:
+      net.ipv4.ip_unprivileged_port_start: 0
+
+    ports:
+      - "80:80"
+    volumes:
+      - ".:/var/www/html"
+    environment:
+      - PHP_IDE_CONFIG=serverName=test-app
+      - XDEBUG_CONFIG=remote_host=192.168.1.26 remote_autostart=On remote_enable=On idekey=XDEBUG remote_log=/tmp/xdebug.log remote_port=9000
+      - PHP_XDEBUG_ENABLED=1
+      - PHP_XDEBUG_IDE_KEY=XDEBUG
+
+

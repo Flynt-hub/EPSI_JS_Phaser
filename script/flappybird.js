@@ -1,108 +1,91 @@
-var config = {
-  width: 400,
-  height: 490,
-  scene: {
-    preload: preload,  // Chargement des ressources
-    create: create,    // Initialisation des variables & objets
-    update: update     // Fonction appelée 60 fois par seconde
-  },
-  parent: 'flappyBird', // Affiche le jeu dans le div id="flappyBird"
+class Example extends Phaser.Scene
+{
+  constructor ()
+  {
+    super();
+  }
+
+  preload ()
+  {
+    this.load.image('map', 'img/earthbound-scarab.png');
+    this.load.image('ship', 'img/fmship.png');
+  }
+
+  create ()
+  {
+    this.cameras.main.setBounds(0, 0, 1024, 2048);
+
+    this.add.image(0, 0, 'map').setOrigin(0).setScrollFactor(1);
+
+    this.cursors = this.input.keyboard.createCursorKeys();
+
+    this.ship = this.physics.add.image(400.5, 301.3, 'ship');
+    // ship = this.add.image(400.5, 301.3, 'ship');
+
+    this.cameras.main.startFollow(this.ship, true, 0.09, 0.09);
+    // this.cameras.main.roundPixels = true;
+
+    this.cameras.main.setZoom(4);
+  }
+
+  updateDirect ()
+  {
+    if (this.cursors.left.isDown)
+    {
+      this.ship.setAngle(-90);
+      this.ship.x -= 2.5;
+    }
+    else if (this.cursors.right.isDown)
+    {
+      this.ship.setAngle(90);
+      this.ship.x += 2.5;
+    }
+
+    if (this.cursors.up.isDown)
+    {
+      this.ship.setAngle(0);
+      this.ship.y -= 2.5;
+    }
+    else if (this.cursors.down.isDown)
+    {
+      this.ship.setAngle(-180);
+      this.ship.y += 2.5;
+    }
+  }
+
+  update ()
+  {
+    this.ship.setVelocity(0);
+
+    if (this.cursors.left.isDown)
+    {
+      this.ship.setAngle(-90).setVelocityX(-200);
+    }
+    else if (this.cursors.right.isDown)
+    {
+      this.ship.setAngle(90).setVelocityX(200);
+    }
+
+    if (this.cursors.up.isDown)
+    {
+      this.ship.setAngle(0).setVelocityY(-200);
+    }
+    else if (this.cursors.down.isDown)
+    {
+      this.ship.setAngle(-180).setVelocityY(200);
+    }
+  }
+}
+
+const config = {
+  type: Phaser.AUTO,
+  parent: 'phaser-example',
+  width: 800,
+  height: 600,
+  pixelArt: true,
   physics: {
-    default: 'arcade', // Permet d'appliquer un set de mouvements aux objets
-    arcade: {
-      gravity: {
-        y: 0
-      },
-    },
+    default: 'arcade',
   },
-  backgroundColor: '#71c5cf', // Ciel bleu
+  scene: [ Example ]
 };
-
-// Variables globales
-var game = new Phaser.Game(config);
-var tuyau;
-var pointeur;
-
-function preload () {
-  // C'est là qu'on vas charger les images et les sons
-  this.load.image('bird', 'img/bird.png');
-  this.load.image('pipe', 'img/pipe.png');
-  this.load.audio('jump', 'sound/jump.wav');
-}
-
-function create () {
-  // Ici on vas initialiser les variables, l'affichage ...
-
-  piaf = this.physics.add.sprite(100, 245, 'bird'); // Affiche 'bird' en x=100 y=245
-  piaf.body.gravity.y = 1000; // Ajoute jusqu'a 1000 px / frame a la coordonnée y des objets
-
-  // Écoute la touche espace
-  espace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
-  // Écoute le tap (ou le clic)
-  pointeur = this.input.activePointer;
-
-  // Appel la fonction nouvelleColonne toutes les 1,5 secondes
-  genereTuyaux = this.time.addEvent({
-    delay: 1500,
-    callback: nouvelleColonne,
-    callbackScope: this,
-    loop: true,
-  });
-
-  // Affichage du score
-  let style = { font: '20px Arial', fill: '#fff' };
-  score = 0;
-  this.scoreText = this.add.text(20, 20, score, style);
-
-  // Par défaut : on est vivant
-  piaf.alive = true;
-}
-
-function update () {
-  // C'est la boucle principale du jeu
-
-  // Si l'oiseau quite l'écran
-  if (piaf.y < 0 || piaf.y > 490) {
-    this.scene.restart(); // On redémare
-  }
-
-  // Si mort on ne saute plus !
-  if(piaf.alive) {
-    // Si on appuie sur "espace"
-    if (Phaser.Input.Keyboard.JustDown(espace) || pointeur.isDown) {
-      piaf.setVelocityY(-350); // on envoie piaf vers le haut
-      this.sound.play('jump'); // Chpoing
-      piaf.angle = -20; // Redresse !
-    }
-  }
-
-  // Colision Oiseau / colonne
-  if(this.physics.collide(piaf, tuyau)) {
-    if(piaf.alive == false) {
-      // Si déjà mort : on n'en rajoute pas
-      return;
-    }
-    piaf.alive = false; // on le tue
-  }
-
-  // L'oiseau penche quand il tombe
-  if (piaf.angle < 20) {
-    piaf.angle += 1;
-  }
-}
-
-function nouvelleColonne() {
-  // choisi une position entre 1 et 5 pour le trou dans les tyuaux
-  trou = Phaser.Math.Between(1, 5);
-  // on regroupe tout les bout de tuyaux dans un objet groupe
-  tuyau = this.physics.add.group();
-  for(var i = 0; i < 8; i++) {
-    if(i != trou && i != trou + 1) {
-      // on ajoute les morceaux en colonne
-      tuyau.create(400, (60 * i) + 30, 'pipe');
-    }
-  }
-  tuyau.setVelocityX(-200); // Fait défiler des tuyaux vers la gauche
-  score += 1;
-  this.scoreText.setText(score);
-}
+const game = new Phaser.Game(config);
