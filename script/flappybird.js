@@ -80,8 +80,8 @@ class Example extends Phaser.Scene
 const config = {
   type: Phaser.AUTO,
   parent: 'phaser-example',
-  width: 800,
-  height: 600,
+  width: window.innerWidth  * 0.9,
+  height: window.innerHeight * 0.9,
   pixelArt: true,
   physics: {
     default: 'arcade',
