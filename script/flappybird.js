@@ -20,6 +20,7 @@ var config = {
 
 // Variables globales
 var game = new Phaser.Game(config);
+var tuyau;
 
 function preload () {
   // C'est là qu'on vas charger les images et les sons
@@ -27,6 +28,7 @@ function preload () {
   this.load.image('pipe', 'img/pipe.png');
   this.load.audio('jump', 'sound/jump.wav');
 }
+
 function create () {
   // Ici on vas initialiser les variables, l'affichage ...
 
@@ -58,7 +60,13 @@ function update () {
     piaf.setVelocityY(-350); // on envoie piaf vers le haut
     this.sound.play('jump'); // Chpoing
   }
+
+  // Colision Oiseau / colonne
+  if(this.physics.collide(piaf, tuyau)) {
+    this.scene.restart(); // On relance le jeu
+  }
 }
+
 function nouvelleColonne() {
   // choisi une position entre 1 et 5 pour le trou dans les tyuaux
   trou = Phaser.Math.Between(1, 5);
