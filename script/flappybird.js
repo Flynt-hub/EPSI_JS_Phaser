@@ -24,12 +24,16 @@ var game = new Phaser.Game(config);
 function preload () {
   // C'est là qu'on vas charger les images et les sons
   this.load.image('bird', 'img/bird.png');
+  this.load.audio('jump', 'sound/jump.wav');
 }
 function create () {
   // Ici on vas initialiser les variables, l'affichage ...
 
   piaf = this.physics.add.sprite(100, 245, 'bird'); // Affiche 'bird' en x=100 y=245
   piaf.body.gravity.y = 1000; // Ajoute jusqu'a 1000 px / frame a la coordonnée y des objets
+
+  // Écoute la touche espace
+  espace = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 }
 function update () {
   // C'est la boucle principale du jeu
@@ -37,5 +41,11 @@ function update () {
   // Si l'oiseau quite l'écran
   if (piaf.y < 0 || piaf.y > 490) {
     this.scene.restart(); // On redémare
+  }
+
+  // Si on appuie sur "espace"
+  if (Phaser.Input.Keyboard.JustDown(espace)) {
+    piaf.setVelocityY(-350); // on envoie piaf vers le haut
+    this.sound.play('jump'); // Chpoing
   }
 }
