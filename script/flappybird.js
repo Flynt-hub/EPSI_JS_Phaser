@@ -70,7 +70,7 @@ class Example extends Phaser.Scene
     {
       this.ship.setAngle(0).setVelocityY(-200);
     }
-    else if (this.cursors.down.isDown)
+    else if (keyBinding.down(this.cursors))
     {
       this.ship.setAngle(-180).setVelocityY(200);
     }
