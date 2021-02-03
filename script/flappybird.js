@@ -13,70 +13,32 @@ class Example extends Phaser.Scene
 
   create ()
   {
-    this.cameras.main.setBounds(0, 0, 1024, 2048);
+    //this.cameras.main.setBounds(0, 0, 1024, 2048);
+    this.physics.world.setBounds(0, 0, 1024, 2048);
 
     this.add.image(0, 0, 'map').setOrigin(0).setScrollFactor(1);
 
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.ship = this.physics.add.image(400.5, 301.3, 'ship');
+    this.ship.body.collideWorldBounds = true;
+
     this.shipClass = new keyBinding(this.ship);
-    // ship = this.add.image(400.5, 301.3, 'ship');
 
-    this.cameras.main.startFollow(this.ship, true, 0.09, 0.09);
-    // this.cameras.main.roundPixels = true;
 
-    this.cameras.main.setZoom(4);
-  }
+    this.cameras.main.startFollow(this.ship);
+    this.cameras.main.setBounds(0, 0, 1024, 2048);
 
-  updateDirect ()
-  {
-    if (this.cursors.left.isDown)
-    {
-      this.ship.setAngle(-90);
-      this.ship.x -= 2.5;
-    }
-    else if (this.cursors.right.isDown)
-    {
-      this.ship.setAngle(90);
-      this.ship.x += 2.5;
-    }
-
-    if (this.cursors.up.isDown)
-    {
-      this.ship.setAngle(0);
-      this.ship.y -= 2.5;
-    }
-    else if (this.cursors.down.isDown)
-    {
-      this.ship.setAngle(-180);
-      this.ship.y += 2.5;
-    }
+    this.cameras.main.setZoom(3);
   }
 
   update ()
   {
-    this.shipClass.move();
-    this.ship.setVelocity(0);
-    var toto = game.loop.actualFps
-    if (this.cursors.left.isDown)
-    {
-      this.ship.setAngle(-90).setVelocityX(-200);
-    }
-    else if (this.cursors.right.isDown)
-    {
-      this.ship.setAngle(90).setVelocityX(200);
-    }
 
-    if (this.cursors.up.isDown)
-    {
-      this.ship.setAngle(0).setVelocityY(-200);
-    }
-    else if (this.cursors.down.isDown)
-    {
-      this.ship.setAngle(-180).setVelocityY(200);
-    }
+    this.ship.setVelocity(0);
     var tata = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
+    this.shipClass.move(this.cursors);
   }
 }
 
@@ -88,6 +50,7 @@ const config = {
   pixelArt: true,
   physics: {
     default: 'arcade',
+    fps: 30
   },
   scene: [ Example ]
 };
