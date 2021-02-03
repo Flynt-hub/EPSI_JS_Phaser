@@ -20,6 +20,7 @@ class Example extends Phaser.Scene
     this.cursors = this.input.keyboard.createCursorKeys();
 
     this.ship = this.physics.add.image(400.5, 301.3, 'ship');
+    this.shipClass = new keyBinding(this.ship);
     // ship = this.add.image(400.5, 301.3, 'ship');
 
     this.cameras.main.startFollow(this.ship, true, 0.09, 0.09);
@@ -55,8 +56,9 @@ class Example extends Phaser.Scene
 
   update ()
   {
+    this.shipClass.move();
     this.ship.setVelocity(0);
-
+    var toto = game.loop.actualFps
     if (this.cursors.left.isDown)
     {
       this.ship.setAngle(-90).setVelocityX(-200);
@@ -70,10 +72,11 @@ class Example extends Phaser.Scene
     {
       this.ship.setAngle(0).setVelocityY(-200);
     }
-    else if (keyBinding.down(this.cursors))
+    else if (this.cursors.down.isDown)
     {
       this.ship.setAngle(-180).setVelocityY(200);
     }
+    var tata = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
   }
 }
 
