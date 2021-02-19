@@ -1,16 +1,17 @@
 class Actor extends Phaser.GameObjects.Sprite
 {
-    #gameManager;
-    #spriteName;
-    #armor;
-    #lifePoint;
 
     constructor(gameManager, x, y, spriteName)
     {
-        super(gameManager, x, y, spriteName)
+        super(gameManager, x, y, spriteName);
+
         this.gameManager = gameManager;
         this.spriteName = spriteName;
 
+        this.gameManager;
+        this.spriteName;
+        this.armor;
+        this.lifePoint;
     }
 
     move(direction){
@@ -21,15 +22,15 @@ class Actor extends Phaser.GameObjects.Sprite
 
     }
     takeDammage(damage){
-        this.lifePoint = this.#lifePoint - dammage;
+        this.lifePoint = this.lifePoint - dammage;
     }
 
     getLifePoint(){
-        return this.#lifePoint;
+        return this.lifePoint;
     }
 
     setLife(newLife){
-        this.#lifePoint = newLife
+        this.   lifePoint = newLife
     }
 
 
