@@ -35,9 +35,15 @@ var platforms;
 var score = 0 ;
 var scoreText ;
 var bombs ;
+var lLevelManager = new LevelManager() ;
+var lFileLoader = new FileLoader() ;
 
 function preload ()
 {
+    lLevelManager.addLevel( new Level(this) ) ;
+    lFileLoader.setPhaserContext(this) ;
+    lFileLoader.loadSpriteForPlayer() ;
+
     this.load.image('sky', './assets/sky.png');
     this.load.image('ground', './assets/platform.png');
     this.load.image('star', './assets/star.png');
@@ -45,27 +51,6 @@ function preload ()
     this.load.spritesheet('dude', './assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 
     this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
-
-    this.load.image('knightIdle000', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_000') ;
-    this.load.image('knightIdle001', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_001') ;
-    this.load.image('knightIdle002', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_002') ;
-    this.load.image('knightIdle003', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_003') ;
-    this.load.image('knightIdle004', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_003') ;
-    this.load.image('knightIdle005', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_004') ;
-    this.load.image('knightIdle006', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_005') ;
-    this.load.image('knightIdle007', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_006') ;
-    this.load.image('knightIdle008', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_007') ;
-    this.load.image('knightIdle009', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_008') ;
-    this.load.image('knightIdle010', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_009') ;
-    this.load.image('knightIdle011', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_010') ;
-    this.load.image('knightIdle012', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_011') ;
-    this.load.image('knightIdle013', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_012') ;
-    this.load.image('knightIdle014', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_013') ;
-    this.load.image('knightIdle015', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_014') ;
-    this.load.image('knightIdle016', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_015') ;
-    this.load.image('knightIdle017', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_016') ;
-    this.load.image('knightIdle018', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_017') ;
-
 }
 
 function create ()
