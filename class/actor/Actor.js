@@ -1,43 +1,46 @@
-class Actor extends Phaser.GameObjects.Sprite
-{
+class Actor extends Phaser.GameObjects.Sprite {
 
-    constructor(gameManager, x, y, spriteName)
-    {
+    gameManager;
+    spriteName;
+    armor;
+    lifePoint;
+
+    constructor(gameManager, x, y, spriteName) {
         super(gameManager, x, y, spriteName);
 
         this.gameManager = gameManager;
         this.spriteName = spriteName;
 
-        this.gameManager;
-        this.spriteName;
-        this.armor;
-        this.lifePoint;
-    }
-
-    move(direction){
-        // should move this object on screen
 
     }
-    hitOther(cible){
+
+    move(direction) {
+        // should move the object on screen
 
     }
-    takeDammage(damage){
-        this.lifePoint = this.lifePoint - dammage;
+
+    hitOther(cible) {
+
+
     }
 
-    getLifePoint(){
+    takeDammage(damage) {
+        this.setLife(this.lifePoint - damage);
+    }
+
+    getLifePoint() {
         return this.lifePoint;
     }
 
-    setLife(newLife){
-        this.   lifePoint = newLife
+    setLife(newLife) {
+        this.lifePoint = newLife
     }
-
-
-
-
-
-
+    getArmor(){
+        return this.armor;
+    }
+    setArmor(newArmor){
+        this.armor = newArmor;
+    }
 
 
 }
