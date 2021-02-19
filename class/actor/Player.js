@@ -1,7 +1,9 @@
 class Player extends Actor
 {
-    constructor()
+    constructor(gameManager, x, y, spriteName)
     {
+        super(gameManager, x, y, spriteName)
 
     }
+
 }

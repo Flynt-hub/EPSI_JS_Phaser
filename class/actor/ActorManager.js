@@ -2,7 +2,7 @@ class ActorManager
 {
     constructor()
     {
-        this.mActors      = [] ;
-        this.mGameManager = null ;
+        this.mActors      = [];
+        this.mGameManager = null;
     }
 }

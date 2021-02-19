@@ -19,17 +19,24 @@ class GameManager extends Phaser.Scene
 
     }
 }
+const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
+const DEFAULT_HEIGHT = 720 // any height you want
+const DEFAULT_WIDTH = ratio * DEFAULT_HEIGHT
 
 const config = {
     type: Phaser.AUTO,
     parent: 'phaser-example',
-    width: window.innerWidth  * 0.9,
-    height: window.innerHeight * 0.9,
-    pixelArt: true,
+    scale: {
+        mode: Phaser.Scale.ScaleModes.FIT,
+        parent: 'phaser-example',
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+        width: 800,
+        height: 600
+    },
     physics: {
         default: 'arcade',
         fps: 30
     },
-    scene: [ SceneMain ]
+    scene: [ GameManager ]
 };
 const game = new Phaser.Game(config);
