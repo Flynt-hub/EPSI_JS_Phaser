@@ -1,7 +1,7 @@
+/*
 const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
 const DEFAULT_HEIGHT = 720 // any height you want
 const DEFAULT_WIDTH = ratio * DEFAULT_HEIGHT
-
 var config = {
     type: Phaser.AUTO,//it try to use phaser.webGL, if failed then use Phaser.CANVAS
     //width: 800,
@@ -29,8 +29,8 @@ var config = {
         update: update
     },
 };
-
-var game = new Phaser.Game(config);
+*/
+//var game = new Phaser.Game(config);
 var platforms;
 var score = 0 ;
 var scoreText ;
@@ -40,7 +40,7 @@ var lFileLoader = new FileLoader() ;
 
 function preload ()
 {
-    lLevelManager.addLevel( new Level(this) ) ;
+    lLevelManager.setPhaserContext(this) ;
     lFileLoader.setPhaserContext(this) ;
     lFileLoader.loadSpriteForPlayer() ;
 
@@ -51,10 +51,12 @@ function preload ()
     this.load.spritesheet('dude', './assets/dude.png', { frameWidth: 32, frameHeight: 48 });
 
     this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
+    console.log(this);
 }
 
 function create ()
 {
+    console.log(this) ;
     this.add.image(this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground');
     platforms = this.physics.add.staticGroup();
 

@@ -26,6 +26,6 @@ class Level
     }
     loadFirstLevel()
     {
-        //this.mPhaserGame.load
+        
     }
 }

@@ -1,17 +1,20 @@
 class LevelManager
 {
-    constructor(pPhaserGame)
+    constructor()
     {
-        this.mPhaserGame = pPhaserGame ;
         this.mLevels = [] ;
     }
 
+    setPhaserContext(pPhaserContext)
+    {
+        this.mPhaserContext = pPhaserContext ;
+    }
     addLevel(pLevel)
     {
         this.mLevels.push(pLevel) ;
     }
-    createFirstLevel(pPhaserGame)
+    createFirstLevel()
     {
-        this.mPhaserGame.push( new Level(pPhaserGame, 1) ) ;
+        this.mPhaserGame.push( new Level(this.mPhaserContext, 1) ) ;
     }
 }

@@ -11,17 +11,16 @@ class FileLoader
     setPhaserContext(pPhaserContext)
     {
         this.mPhaserContext = pPhaserContext ;
-    }
+    }    
 
     loadSpriteForPlayer()
     {
         if ( this.mPhaserContext !== undefined && this.mPhaserContext !== null)
-        {
+        {//TODO change this to use an array instead of this block
             this.mPhaserContext.load.image('knightIdle000', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_000') ;
             this.mPhaserContext.load.image('knightIdle001', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_001') ;
             this.mPhaserContext.load.image('knightIdle002', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_002') ;
             this.mPhaserContext.load.image('knightIdle003', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_003') ;
-            this.mPhaserContext.load.image('knightIdle004', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_003') ;
             this.mPhaserContext.load.image('knightIdle005', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_004') ;
             this.mPhaserContext.load.image('knightIdle006', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_005') ;
             this.mPhaserContext.load.image('knightIdle007', './assets/Templar Knight/PNG/PNG Sequences/Idle/Idle_006') ;
