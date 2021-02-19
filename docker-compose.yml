@@ -17,5 +17,3 @@ services:
       - XDEBUG_CONFIG=remote_host=192.168.1.26 remote_autostart=On remote_enable=On idekey=XDEBUG remote_log=/tmp/xdebug.log remote_port=9000
       - PHP_XDEBUG_ENABLED=1
       - PHP_XDEBUG_IDE_KEY=XDEBUG
-
-
