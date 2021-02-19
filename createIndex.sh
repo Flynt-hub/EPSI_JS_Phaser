@@ -1,8 +1,4 @@
-# EPSI_JS_Phaser
-little JS project to discover Phaser framework
-
-
-génération du index.html
+#!/bin/bash
 
 echo '<!DOCTYPE html> <html lang="fr"> <head> ' > index.html
 echo '<script src="https://cdn.jsdelivr.net/npm/phaser@3.52.0/dist/phaser-arcade-physics.min.js"></script>' >> index.html
