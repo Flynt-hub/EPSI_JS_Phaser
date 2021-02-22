@@ -1,7 +1,7 @@
-/*
 const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
 const DEFAULT_HEIGHT = 720 // any height you want
 const DEFAULT_WIDTH = ratio * DEFAULT_HEIGHT
+
 var config = {
     type: Phaser.AUTO,//it try to use phaser.webGL, if failed then use Phaser.CANVAS
     //width: 800,
@@ -29,52 +29,78 @@ var config = {
         update: update
     },
 };
-*/
-//var game = new Phaser.Game(config);
-var platforms;
-var score = 0 ;
-var scoreText ;
-var bombs ;
-var lLevelManager = new LevelManager() ;
-var lFileLoader = new FileLoader() ;
 
-function preload ()
+let game = new Phaser.Game(config);
+let platforms ;
+let player ;
+let cursor ;
+
+let gKeyA ;
+let gKeyZ ;
+let gKeyE ;
+let gKeyR ;
+let gKeyT ;
+let gKeyY ;
+let gKeyQ ;
+let gKeyS ;
+let gKeyD ;
+let gKeyF ;
+let gKeyG ;
+let gKeyH ;
+
+function preload()
 {
-    lLevelManager.setPhaserContext(this) ;
-    lFileLoader.setPhaserContext(this) ;
-    lFileLoader.loadSpriteForPlayer() ;
-
-    this.load.image('sky', './assets/sky.png');
-    this.load.image('ground', './assets/platform.png');
-    this.load.image('star', './assets/star.png');
-    this.load.image('bomb', './assets/bomb.png');
-    this.load.spritesheet('dude', './assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-
     this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
-    console.log(this);
+    this.load.image('ground', './assets/platform.png');
+
+    loadKnightAnimationSequences( this, 'Idle', 18 ) ;
+    loadKnightAnimationSequences( this, 'Dying', 15 ) ;
+    loadKnightAnimationSequences( this, 'Falling Down', 6 ) ;
+    loadKnightAnimationSequences( this, 'Hurt', 12 ) ;
+    loadKnightAnimationSequences( this, 'Jump Loop', 6 ) ;
+    loadKnightAnimationSequences( this, 'Jump Start', 6 ) ;
+    loadKnightAnimationSequences( this, 'Kicking', 12 ) ;
+    loadKnightAnimationSequences( this, 'Run Slashing', 12 ) ;
+    loadKnightAnimationSequences( this, 'Run Throwing', 12 ) ;
+    loadKnightAnimationSequences( this, 'Running', 12 ) ;
+    loadKnightAnimationSequences( this, 'Slashing', 12 ) ;
+    loadKnightAnimationSequences( this, 'Slashing in The Air', 12 ) ;
+    loadKnightAnimationSequences( this, 'Sliding', 6 ) ;
+    loadKnightAnimationSequences( this, 'Throwing', 12 ) ;
+    loadKnightAnimationSequences( this, 'Throwing in The Air', 12 ) ;
+    loadKnightAnimationSequences( this, 'Walking', 24 ) ;
+
 }
 
-function create ()
+function create()
 {
-    console.log(this) ;
     this.add.image(this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground');
+    
     platforms = this.physics.add.staticGroup();
-
     platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-
     platforms.create(600, 400, 'ground');
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
 
-
-    //player = this.physics.add.sprite(100, 450, 'dude');
-    
-
-
-
+    createKnightAnimationSequences( this, 'Idle', 18, -1 ) ;
+    createKnightAnimationSequences( this, 'Dying', 15, 1 ) ;
+    createKnightAnimationSequences( this, 'Falling Down', 6, 1 ) ;
+    createKnightAnimationSequences( this, 'Hurt', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Jump Loop', 6, 1 ) ;
+    createKnightAnimationSequences( this, 'Jump Start', 6, 1 ) ;
+    createKnightAnimationSequences( this, 'Kicking', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Run Slashing', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Run Throwing', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Running', 12, -1 ) ;
+    createKnightAnimationSequences( this, 'Slashing', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Slashing in The Air', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Sliding', 6, 1 ) ;
+    createKnightAnimationSequences( this, 'Throwing', 12, 1 ) ;
+    createKnightAnimationSequences( this, 'Throwing in The Air', 12, 1 ) ;
+/*
     this.anims.create(
         {
-            key: 'idle',
+            key: 'Idle',
             frames: [
                 {key: 'knightIdle000'},
                 {key: 'knightIdle001'},
@@ -99,127 +125,116 @@ function create ()
             repeat: -1
         }
     ) ;
+    */
+    console.log(this.anims) ;
 
-    player = this.physics.add.sprite(80, 225, 'knightIdle000').play('idle').setScale(0.1);    
-
+    player = this.physics.add.sprite(50, 200, 'knightIdle000').play('Idle').setScale(0.15);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
-    player.body.setGravityY(300)
-   /* 
-    this.anims.create(
-    {
-        key: 'left',
-        frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),
-        frameRate: 10,
-        repeat: -1
-    });
+    player.body.setGravityY(300); 
 
-    this.anims.create(
-    {
-        key: 'turn',
-        frames: [ { key: 'dude', frame: 4 } ],
-        frameRate: 20
-    });
-
-    this.anims.create(
-    {
-        key: 'right',
-        frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
-        frameRate: 10,
-        repeat: -1
-    });
-
-*/
-    stars = this.physics.add.group(
-    {
-        key: 'star',
-        repeat: 11,// 12 stars
-        setXY: { x: 12, y: 0, stepX: 70 }
-    });
-    
-    bombs = this.physics.add.group();
-
-    
-    stars.children.iterate(function (child) 
-    {
-        
-        child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-        
-    });
-    
-    scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-    
-    this.physics.add.collider(bombs, platforms);   
-    this.physics.add.collider(player, bombs, hitBomb, null, this);
-    this.physics.add.collider(stars, stars) ;
-    this.physics.add.collider(stars, platforms) ;
     this.physics.add.collider(player, platforms);
 
-    this.physics.add.overlap(player, stars, collectStar, null, this) ;
+    gKeyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A) ;
+    gKeyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z) ;
+    gKeyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E) ;
+    gKeyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R) ;
+    gKeyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T) ;
+    gKeyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y) ;
+    gKeyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q) ;
+    gKeyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S) ;
+    gKeyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D) ;
+    gKeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F) ;
+    gKeyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G) ;
+    gKeyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H) ;
+    
     cursors = this.input.keyboard.createCursorKeys();
+
 }
 
-function update ()
+function update()
 {
-    //player.anims.play('idle', true) ;
-    /*
+    
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
-
-        player.anims.play('left', true);
+        player.flipX = true ;
+        player.anims.play( 'Running', true ) ;
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
-
-        player.anims.play('right', true);
+        player.flipX = false ;        
+        player.anims.play( 'Running', true ) ;
     }
+    else if ( gKeyA.isDown ) { player.anims.play( 'Dying' , true) ; }
+    else if ( gKeyZ.isDown ) { player.anims.play( 'Falling Down' , true) ; }
+    else if ( gKeyE.isDown ) { player.anims.play( 'Hurt' , true) ; }
+    else if ( gKeyE.isDown ) { player.anims.play( 'Jump Start' , true) ; }
+    else if ( gKeyR.isDown ) { player.anims.play( 'Jump Loop' , true) ; }
+    else if ( gKeyT.isDown ) { player.anims.play( 'Kicking' , true) ; }
+    else if ( gKeyY.isDown ) { player.anims.play( 'Run Slashing' , true) ; }
+    else if ( gKeyQ.isDown ) { player.anims.play( 'Run Throwing' , true) ; }
+    else if ( gKeyS.isDown ) { player.anims.play( 'Slashing' , true) ; }
+    else if ( gKeyD.isDown ) { player.anims.play( 'Slashing in The Air' , true) ; }
+    else if ( gKeyF.isDown ) { player.anims.play( 'Sliding' , true) ; }
+    else if ( gKeyG.isDown ) { player.anims.play( 'Throwing' , true) ; }
+    else if ( gKeyH.isDown ) { player.anims.play( 'Throwing in The Air' , true) ; }
     else
     {
-        player.setVelocityX(0);
-
-        player.anims.play('turn');
+        player.setVelocityX(0) ;
+        player.anims.play( 'Idle', true ) ;
     }
-*/
+
     if (cursors.space.isDown /*&& player.body.touching.down*/)
     {
         player.setVelocityY(-450);
     }
 }
 
-function collectStar (player, star)
+function loadKnightAnimationSequences(pContext, pAnimationName, pNumberOfSequences)
 {
-    star.disableBody(true, true);
-
-    score += 10;
-    scoreText.setText('Score: ' + score);
-
-    if (stars.countActive(true) === 0)
+    for (let i = 0; i < pNumberOfSequences; ++i) 
     {
-        stars.children.iterate(function (child) {
-
-            child.enableBody(true, child.x, 0, true, true);
-
-        });
-
-        var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-        var bomb = bombs.create(x, 16, 'bomb');
-        bomb.setBounce(1);
-        bomb.setCollideWorldBounds(true);
-        bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
+        let lPath = './assets/Templar Knight/PNG/PNG Sequences/' + pAnimationName + '/' + pAnimationName + '_0' ;
+        let lKey = 'knight' + pAnimationName  + '0' ;
+        if ( i < 10 )
+        {
+            lKey  += '0' + i ;
+            lPath += '0' + i + '.png' ;
+            pContext.load.image( lKey, lPath ) ;
+        }
+        else
+        {
+            lKey  += i ;
+            lPath += i + '.png' ;
+            pContext.load.image( lKey, lPath ) ;
+        }
     }
 }
-
-function hitBomb (player, bomb)
+function createKnightAnimationSequences( pContext, pAnimationName, pNumberOfSequences, pSequenceRepeatNumber )
 {
-    this.physics.pause();
+    let lKeyFrame        = function( pKeyName ){this.key = pKeyName ; } ;
+    let lAnimationKeyTab = [] ; 
 
-    player.setTint(0xff0000);
-
-    player.anims.play('turn');
-
-    gameOver = true;
+    for (let i = 0; i < pNumberOfSequences; ++i) 
+    {
+        let lKeyName = 'knight' + pAnimationName  + '0' ;
+        if ( i < 10 )
+        {
+            lAnimationKeyTab.push( new lKeyFrame( lKeyName + '0' + i ) ) ;
+        }
+        else
+        {
+            lAnimationKeyTab.push( new lKeyFrame( lKeyName + i ) ) ;
+        }
+    }
+    pContext.anims.create(
+        {
+            key: pAnimationName,
+            frames: lAnimationKeyTab,
+            frameRate: 15,
+            repeat: pSequenceRepeatNumber
+        }
+    ) ;
 }

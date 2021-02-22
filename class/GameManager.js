@@ -35,7 +35,7 @@ class GameManager extends Phaser.Scene
         this.platforms.create(600, 400, 'ground');
         this.platforms.create(50, 250, 'ground');
         this.platforms.create(750, 220, 'ground');    
-    
+        
         this.anims.create(
             {
                 key: 'idle',
@@ -63,80 +63,22 @@ class GameManager extends Phaser.Scene
                 repeat: -1
             }
         ) ;
-    
         this.player = this.physics.add.sprite(80, 225, 'knightIdle000').play('idle').setScale(0.1);    
     
         this.player.setBounce(0.2);
         this.player.setCollideWorldBounds(true);
         this.player.body.setGravityY(300)
-
-        this.stars = this.physics.add.group(
-            {
-                key: 'star',
-                repeat: 11,// 12 stars
-                setXY: { x: 12, y: 0, stepX: 70 }
-            });
             
-            this.bombs = this.physics.add.group();
+        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+            
+        this.physics.add.collider(this.player, this.platforms);
         
-            
-            this.stars.children.iterate(function (child) 
-            {
-                
-                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
-                
-            });
-            
-            this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-            
-            this.physics.add.collider(this.bombs, this.platforms);   
-            this.physics.add.collider(this.player, this.bombs, this.hitBomb, null, this);
-            this.physics.add.collider(this.stars, this.stars) ;
-            this.physics.add.collider(this.stars, this.platforms) ;
-            this.physics.add.collider(this.player, this.platforms);
-        
-            this.physics.add.overlap(this.player, this.stars, this.collectStar, null, this) ;
-            this.cursors = this.input.keyboard.createCursorKeys();
+        this.cursors = this.input.keyboard.createCursorKeys();
     }
 
     update ()
     {
 
-    }
-
-    hitBomb (player, bomb)
-    {
-        this.physics.pause();
-
-        player.setTint(0xff0000);
-
-        player.anims.play('turn');
-
-        gameOver = true;
-    }
-    collectStar (player, star)
-    {
-        star.disableBody(true, true);
-
-        score += 10;
-        scoreText.setText('Score: ' + score);
-
-        if (stars.countActive(true) === 0)
-        {
-            stars.children.iterate(function (child) {
-
-                child.enableBody(true, child.x, 0, true, true);
-
-            });
-
-            var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
-
-            var bomb = bombs.create(x, 16, 'bomb');
-            bomb.setBounce(1);
-            bomb.setCollideWorldBounds(true);
-            bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
-
-        }
     }
 }
 const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
