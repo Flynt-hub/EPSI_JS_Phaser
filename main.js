@@ -245,11 +245,10 @@ function createAnimationSequences( pContext, pAnimationName, pNumberOfSequences,
         {
             lAnimationKeyTab.push( new lKeyFrame( lKeyName + i ) ) ;
         }
-        console.log(lKeyName) ;
     }
     pContext.anims.create(
         {
-            key: pAnimationName,
+            key: pModelName + pAnimationName,
             frames: lAnimationKeyTab,
             frameRate: 15,
             repeat: pSequenceRepeatNumber
