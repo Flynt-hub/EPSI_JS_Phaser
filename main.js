@@ -33,6 +33,7 @@ var config = {
 let game = new Phaser.Game(config);
 let platforms ;
 let player ;
+let gEnemyMummy ;
 let cursor ;
 
 let gKeyA ;
@@ -48,27 +49,49 @@ let gKeyF ;
 let gKeyG ;
 let gKeyH ;
 
+
 function preload()
 {
+    let lKnightAnimationFolderName = 'Templar Knight' ;
+    let lMummyAnimationFolderName  = 'Egyptian Mummy' ;
+    
     this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
     this.load.image('ground', './assets/platform.png');
 
-    loadKnightAnimationSequences( this, 'Idle', 18 ) ;
-    loadKnightAnimationSequences( this, 'Dying', 15 ) ;
-    loadKnightAnimationSequences( this, 'Falling Down', 6 ) ;
-    loadKnightAnimationSequences( this, 'Hurt', 12 ) ;
-    loadKnightAnimationSequences( this, 'Jump Loop', 6 ) ;
-    loadKnightAnimationSequences( this, 'Jump Start', 6 ) ;
-    loadKnightAnimationSequences( this, 'Kicking', 12 ) ;
-    loadKnightAnimationSequences( this, 'Run Slashing', 12 ) ;
-    loadKnightAnimationSequences( this, 'Run Throwing', 12 ) ;
-    loadKnightAnimationSequences( this, 'Running', 12 ) ;
-    loadKnightAnimationSequences( this, 'Slashing', 12 ) ;
-    loadKnightAnimationSequences( this, 'Slashing in The Air', 12 ) ;
-    loadKnightAnimationSequences( this, 'Sliding', 6 ) ;
-    loadKnightAnimationSequences( this, 'Throwing', 12 ) ;
-    loadKnightAnimationSequences( this, 'Throwing in The Air', 12 ) ;
-    loadKnightAnimationSequences( this, 'Walking', 24 ) ;
+    loadAnimationSequences( this, 'Idle', 18, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Dying', 15, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Falling Down', 6, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Hurt', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Jump Loop', 6, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Jump Start', 6, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Kicking', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Run Slashing', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Run Throwing', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Running', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Slashing', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Slashing in The Air', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Sliding', 6, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Throwing', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Throwing in The Air', 12, lKnightAnimationFolderName, 'knight' ) ;
+    loadAnimationSequences( this, 'Walking', 24, lKnightAnimationFolderName, 'knight' ) ;
+
+    loadAnimationSequences( this, 'Idle', 18, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Idle Blinking', 18, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Dying', 15, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Falling Down', 6, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Hurt', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Jump Loop', 6, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Jump Start', 6, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Kicking', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Run Slashing', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Run Throwing', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Running', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Slashing', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Slashing in The Air', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Sliding', 6, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Throwing', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Throwing in The Air', 12, lMummyAnimationFolderName, 'mummy' ) ;
+    loadAnimationSequences( this, 'Walking', 24, lMummyAnimationFolderName, 'mummy' ) ;
 
 }
 
@@ -82,50 +105,38 @@ function create()
     platforms.create(50, 250, 'ground');
     platforms.create(750, 220, 'ground');
 
-    createKnightAnimationSequences( this, 'Idle', 18, -1 ) ;
-    createKnightAnimationSequences( this, 'Dying', 15, 1 ) ;
-    createKnightAnimationSequences( this, 'Falling Down', 6, 1 ) ;
-    createKnightAnimationSequences( this, 'Hurt', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Jump Loop', 6, 1 ) ;
-    createKnightAnimationSequences( this, 'Jump Start', 6, 1 ) ;
-    createKnightAnimationSequences( this, 'Kicking', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Run Slashing', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Run Throwing', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Running', 12, -1 ) ;
-    createKnightAnimationSequences( this, 'Slashing', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Slashing in The Air', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Sliding', 6, 1 ) ;
-    createKnightAnimationSequences( this, 'Throwing', 12, 1 ) ;
-    createKnightAnimationSequences( this, 'Throwing in The Air', 12, 1 ) ;
-/*
-    this.anims.create(
-        {
-            key: 'Idle',
-            frames: [
-                {key: 'knightIdle000'},
-                {key: 'knightIdle001'},
-                {key: 'knightIdle002'},
-                {key: 'knightIdle003'},
-                {key: 'knightIdle004'},
-                {key: 'knightIdle005'},
-                {key: 'knightIdle006'},
-                {key: 'knightIdle007'},
-                {key: 'knightIdle008'},
-                {key: 'knightIdle009'},
-                {key: 'knightIdle010'},
-                {key: 'knightIdle011'},
-                {key: 'knightIdle012'},
-                {key: 'knightIdle013'},
-                {key: 'knightIdle014'},
-                {key: 'knightIdle015'},
-                {key: 'knightIdle016'},
-                {key: 'knightIdle017'}
-            ],
-            frameRate: 15,
-            repeat: -1
-        }
-    ) ;
-    */
+    createAnimationSequences( this, 'Idle', 18, -1, 'knight' ) ;
+    createAnimationSequences( this, 'Dying', 15, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Falling Down', 6, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Hurt', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Jump Loop', 6, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Jump Start', 6, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Kicking', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Run Slashing', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Run Throwing', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Running', 12, -1, 'knight' ) ;
+    createAnimationSequences( this, 'Slashing', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Slashing in The Air', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Sliding', 6, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Throwing', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Throwing in The Air', 12, 1, 'knight' ) ;
+
+    createAnimationSequences( this, 'Idle', 18, -1, 'mummy' ) ;
+    createAnimationSequences( this, 'Dying', 15, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Falling Down', 6, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Hurt', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Jump Loop', 6, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Jump Start', 6, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Kicking', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Run Slashing', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Run Throwing', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Running', 12, -1, 'mummy' ) ;
+    createAnimationSequences( this, 'Slashing', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Slashing in The Air', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Sliding', 6, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Throwing', 12, 1, 'mummy' ) ;
+    createAnimationSequences( this, 'Throwing in The Air', 12, 1, 'mummy' ) ;
+
     console.log(this.anims) ;
 
     player = this.physics.add.sprite(50, 200, 'knightIdle000').play('Idle').setScale(0.15);
@@ -133,7 +144,13 @@ function create()
     player.setCollideWorldBounds(true);
     player.body.setGravityY(300); 
 
+    gEnemyMummy = this.physics.add.sprite(750, 200, 'mummyIdle000').play('Idle').setScale(0.15);
+    gEnemyMummy.setBounce(0.2);
+    gEnemyMummy.setCollideWorldBounds(true);
+    gEnemyMummy.body.setGravityY(300); 
+
     this.physics.add.collider(player, platforms);
+    this.physics.add.collider(gEnemyMummy, platforms);
 
     gKeyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A) ;
     gKeyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z) ;
@@ -192,12 +209,12 @@ function update()
     }
 }
 
-function loadKnightAnimationSequences(pContext, pAnimationName, pNumberOfSequences)
+function loadAnimationSequences(pContext, pAnimationName, pNumberOfSequences, pFolderName, pModelName)
 {
     for (let i = 0; i < pNumberOfSequences; ++i) 
     {
-        let lPath = './assets/Templar Knight/PNG/PNG Sequences/' + pAnimationName + '/' + pAnimationName + '_0' ;
-        let lKey = 'knight' + pAnimationName  + '0' ;
+        let lPath = './assets/' + pFolderName + '/PNG/PNG Sequences/' + pAnimationName + '/' + pAnimationName + '_0' ;
+        let lKey = pModelName + pAnimationName  + '0' ;
         if ( i < 10 )
         {
             lKey  += '0' + i ;
@@ -212,14 +229,14 @@ function loadKnightAnimationSequences(pContext, pAnimationName, pNumberOfSequenc
         }
     }
 }
-function createKnightAnimationSequences( pContext, pAnimationName, pNumberOfSequences, pSequenceRepeatNumber )
+function createAnimationSequences( pContext, pAnimationName, pNumberOfSequences, pSequenceRepeatNumber, pModelName )
 {
     let lKeyFrame        = function( pKeyName ){this.key = pKeyName ; } ;
     let lAnimationKeyTab = [] ; 
 
     for (let i = 0; i < pNumberOfSequences; ++i) 
     {
-        let lKeyName = 'knight' + pAnimationName  + '0' ;
+        let lKeyName = pModelName + pAnimationName  + '0' ;
         if ( i < 10 )
         {
             lAnimationKeyTab.push( new lKeyFrame( lKeyName + '0' + i ) ) ;
@@ -228,6 +245,7 @@ function createKnightAnimationSequences( pContext, pAnimationName, pNumberOfSequ
         {
             lAnimationKeyTab.push( new lKeyFrame( lKeyName + i ) ) ;
         }
+        console.log(lKeyName) ;
     }
     pContext.anims.create(
         {
