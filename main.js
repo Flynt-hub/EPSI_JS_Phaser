@@ -55,8 +55,73 @@ function preload()
     let lKnightAnimationFolderName = 'Templar Knight' ;
     let lMummyAnimationFolderName  = 'Egyptian Mummy' ;
     
+    let lProgressBar = this.add.graphics() ;
+    let lProgressBox = this.add.graphics() ;
+    var lWidth = this.cameras.main.width;
+    let lHeight = this.cameras.main.height;
+    let lLoadingText = this.make.text({
+        x: lWidth / 2,
+        y: lHeight / 2 - 50,
+        text: 'Loading...',
+        style: {
+            font: '20px monospace',
+            fill: '#ffffff'
+        }
+    }) ;
+    let lPercentText = this.make.text({
+        x: lWidth / 2,
+        y: lHeight / 2 - 5,
+        text: '0%',
+        style: {
+            font: '18px monospace',
+            fill: '#ffffff'
+        }
+    }) ;
+    var lAssetText = this.make.text({
+        x: lWidth / 2,
+        y: lHeight / 2 + 50,
+        text: '',
+        style: {
+            font: '18px monospace',
+            fill: '#ffffff'
+        }
+    }) ;
+    lAssetText.setOrigin(0.5, 0.5) ;
+    lPercentText.setOrigin(0.5, 0.5) ;
+    lLoadingText.setOrigin(0.5, 0.5) ;
+    lProgressBox.fillStyle( 0x222222, 0.8 ) ;
+    lProgressBox.fillRect( 240, 270, 320, 50 ) ;
+
+    this.load.on('progress', function (pValue) 
+    {
+        lProgressBar.clear() ;
+        lProgressBar.fillStyle( 0xffffff, 1 ) ;
+        lProgressBar.fillRect( 250, 280, 300 * pValue, 30 ) ;
+        lPercentText.setText(parseInt(pValue * 100) + '%') ;
+    });
+                
+    this.load.on('fileprogress', function (pFile) 
+    {
+        lAssetText.setText('Loading asset: ' + pFile.src.split('/')[ pFile.src.split('/').length - 5 ]) ;
+    });
+     
+    this.load.on('complete', function () 
+    {
+        //console.log('complete') ;
+        lProgressBar.destroy() ;
+        lProgressBox.destroy() ;
+        lLoadingText.destroy() ;
+        lPercentText.destroy();
+        lAssetText.destroy();
+    });
+
     this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
     this.load.image('ground', './assets/platform.png');
+
+    this.load.image( 'volcanoground', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png') ;
+                                     //./assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png
+    console.log(this)
+    loadVolcanoLevelParts( this, 'Platformer', 'Ground', 13 ) ;
 
     loadAnimationSequences( this, 'Idle', 18, lKnightAnimationFolderName, 'knight' ) ;
     loadAnimationSequences( this, 'Dying', 15, lKnightAnimationFolderName, 'knight' ) ;
@@ -139,13 +204,17 @@ function create()
 
     console.log(this.anims) ;
 
-    player = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('Idle').setScale(0.15);
+    player               = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('Idle') ;
+    player.displayWidth  = 100 ;
+    player.displayHeight = 100 ;
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.body.setGravityY(300); 
     player.body.setSize( 340, 550 ) ;
 
-    gEnemyMummy = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle').setScale(0.15);
+    gEnemyMummy               = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle').setScale(0.15);
+    gEnemyMummy.displayWidth  = 100 ;
+    gEnemyMummy.displayHeight = 100 ;
     gEnemyMummy.setBounce(0.2);
     gEnemyMummy.setCollideWorldBounds(true);
     gEnemyMummy.body.setGravityY(300); 
@@ -153,6 +222,7 @@ function create()
 
     this.physics.add.collider( player, platforms );
     this.physics.add.collider( gEnemyMummy, platforms );
+    this.physics.add.collider( gEnemyMummy, player );
 
     gKeyA = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.A ) ;
     gKeyZ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Z ) ;
@@ -257,3 +327,29 @@ function createAnimationSequences( pContext, pAnimationName, pNumberOfSequences,
         }
     ) ;
 }
+function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfParts )
+{
+    let lPartPath = './assets/Volcano Level Set/PNG/' + pPartSetName + '/Volcano Level Set_' + pPartSetName + ' - ' + pPartsName + ' ' ;
+    for (let i = 1; i <= pNumberOfParts; ++i) 
+    {
+        if ( i < 10 )
+        {
+            let lCompletePartPath = lPartPath + '0' + i + '.png' ;
+            let lContextPartName  = pPartsName + '0' + i ;
+            //pContext.load.image( lContextPartName, lCompletePartPath ) ;
+            console.log(lCompletePartPath) ;
+            console.log(lContextPartName) ;
+        }
+        else
+        {
+            let lCompletePartPath = lPartPath + i + 'png' ;
+            let lContextPartName  = pPartsName + i ;
+            pContext.load.image( lContextPartName, lCompletePartPath ) ;
+            console.log(lCompletePartPath) ;
+            console.log(lContextPartName) ;
+        }
+    }
+}
+
+//Volcano Level Set_Platformer - Ground 01.png
+//Volcano Level Set_Platformer - Ground 01
