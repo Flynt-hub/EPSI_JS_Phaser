@@ -19,7 +19,7 @@ var config = {
         arcade: 
         {
             gravity: { y: 300 },
-            debug: false
+            debug: true
         }
     },
     scene: 
@@ -139,31 +139,33 @@ function create()
 
     console.log(this.anims) ;
 
-    player = this.physics.add.sprite(50, 200, 'knightIdle000').play('Idle').setScale(0.15);
+    player = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('Idle').setScale(0.15);
     player.setBounce(0.2);
     player.setCollideWorldBounds(true);
     player.body.setGravityY(300); 
+    player.body.setSize( 340, 550 ) ;
 
-    gEnemyMummy = this.physics.add.sprite(750, 200, 'mummyIdle000').play('Idle').setScale(0.15);
+    gEnemyMummy = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle').setScale(0.15);
     gEnemyMummy.setBounce(0.2);
     gEnemyMummy.setCollideWorldBounds(true);
     gEnemyMummy.body.setGravityY(300); 
+    gEnemyMummy.body.setSize( 400, 550 ) ;
 
-    this.physics.add.collider(player, platforms);
-    this.physics.add.collider(gEnemyMummy, platforms);
+    this.physics.add.collider( player, platforms );
+    this.physics.add.collider( gEnemyMummy, platforms );
 
-    gKeyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A) ;
-    gKeyZ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Z) ;
-    gKeyE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.E) ;
-    gKeyR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.R) ;
-    gKeyT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.T) ;
-    gKeyY = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Y) ;
-    gKeyQ = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.Q) ;
-    gKeyS = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.S) ;
-    gKeyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D) ;
-    gKeyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F) ;
-    gKeyG = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.G) ;
-    gKeyH = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.H) ;
+    gKeyA = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.A ) ;
+    gKeyZ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Z ) ;
+    gKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
+    gKeyR = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.R ) ;
+    gKeyT = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.T ) ;
+    gKeyY = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Y ) ;
+    gKeyQ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Q ) ;
+    gKeyS = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.S ) ;
+    gKeyD = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.D ) ;
+    gKeyF = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.F ) ;
+    gKeyG = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.G ) ;
+    gKeyH = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.H ) ;
     
     cursors = this.input.keyboard.createCursorKeys();
 
