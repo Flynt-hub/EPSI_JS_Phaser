@@ -54,11 +54,10 @@ function preload()
 {
     let lKnightAnimationFolderName = 'Templar Knight' ;
     let lMummyAnimationFolderName  = 'Egyptian Mummy' ;
-    
-    let lProgressBar = this.add.graphics() ;
-    let lProgressBox = this.add.graphics() ;
-    var lWidth = this.cameras.main.width;
-    let lHeight = this.cameras.main.height;
+    let lProgressBar               = this.add.graphics() ;
+    let lProgressBox               = this.add.graphics() ;
+    var lWidth                     = this.cameras.main.width ;
+    let lHeight                    = this.cameras.main.height ;
     let lLoadingText = this.make.text({
         x: lWidth / 2,
         y: lHeight / 2 - 50,
@@ -77,7 +76,7 @@ function preload()
             fill: '#ffffff'
         }
     }) ;
-    var lAssetText = this.make.text({
+    let lAssetText = this.make.text({
         x: lWidth / 2,
         y: lHeight / 2 + 50,
         text: '',
@@ -86,6 +85,7 @@ function preload()
             fill: '#ffffff'
         }
     }) ;
+
     lAssetText.setOrigin(0.5, 0.5) ;
     lPercentText.setOrigin(0.5, 0.5) ;
     lLoadingText.setOrigin(0.5, 0.5) ;
@@ -98,16 +98,13 @@ function preload()
         lProgressBar.fillStyle( 0xffffff, 1 ) ;
         lProgressBar.fillRect( 250, 280, 300 * pValue, 30 ) ;
         lPercentText.setText(parseInt(pValue * 100) + '%') ;
-    });
-                
+    });                
     this.load.on('fileprogress', function (pFile) 
     {
         lAssetText.setText('Loading asset: ' + pFile.src.split('/')[ pFile.src.split('/').length - 5 ]) ;
-    });
-     
+    });     
     this.load.on('complete', function () 
     {
-        //console.log('complete') ;
         lProgressBar.destroy() ;
         lProgressBox.destroy() ;
         lLoadingText.destroy() ;
@@ -329,6 +326,7 @@ function createAnimationSequences( pContext, pAnimationName, pNumberOfSequences,
 }
 function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfParts )
 {
+    /* TODO @David during image loading every space are replace with "%20", this is not a problem during animation sequence loading, need to fix this
     let lPartPath = './assets/Volcano Level Set/PNG/' + pPartSetName + '/Volcano Level Set_' + pPartSetName + ' - ' + pPartsName + ' ' ;
     for (let i = 1; i <= pNumberOfParts; ++i) 
     {
@@ -342,14 +340,12 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
         }
         else
         {
-            let lCompletePartPath = lPartPath + i + 'png' ;
+            let lCompletePartPath = lPartPath + i  ;
             let lContextPartName  = pPartsName + i ;
             pContext.load.image( lContextPartName, lCompletePartPath ) ;
             console.log(lCompletePartPath) ;
             console.log(lContextPartName) ;
         }
     }
+    */
 }
-
-//Volcano Level Set_Platformer - Ground 01.png
-//Volcano Level Set_Platformer - Ground 01
