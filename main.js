@@ -19,7 +19,7 @@ var config = {
         arcade: 
         {
             gravity: { y: 300 },
-            debug: true
+            debug: true // make box colliders appears, add direction/speed vector to every model and stop every animation
         }
     },
     scene: 
@@ -31,7 +31,7 @@ var config = {
 };
 
 let game = new Phaser.Game(config);
-let platforms ;
+let gPlatforms ;
 let player ;
 let gEnemyMummy ;
 let cursor ;
@@ -52,12 +52,12 @@ let gKeyH ;
 
 function preload()
 {
-    let lKnightAnimationFolderName = 'Templar Knight' ;
-    let lMummyAnimationFolderName  = 'Egyptian Mummy' ;
-    let lProgressBar               = this.add.graphics() ;
-    let lProgressBox               = this.add.graphics() ;
-    var lWidth                     = this.cameras.main.width ;
-    let lHeight                    = this.cameras.main.height ;
+    const lKnightAnimationFolderName = 'Templar Knight' ;
+    const lMummyAnimationFolderName  = 'Egyptian Mummy' ;
+    let lProgressBar                 = this.add.graphics() ;
+    let lProgressBox                 = this.add.graphics() ;
+    var lWidth                       = this.cameras.main.width ;
+    let lHeight                      = this.cameras.main.height ;
     let lLoadingText = this.make.text({
         x: lWidth / 2,
         y: lHeight / 2 - 50,
@@ -112,11 +112,10 @@ function preload()
         lAssetText.destroy();
     });
 
-    this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
+    this.load.image('volcanoBackground00', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
+    this.load.image('volcanoBackground01', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 01.png') ;
     this.load.image('ground', './assets/platform.png');
 
-    this.load.image( 'volcanoground', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png') ;
-                                     //./assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png
     console.log(this)
     loadVolcanoLevelParts( this, 'Platformer', 'Ground', 13 ) ;
 
@@ -159,13 +158,34 @@ function preload()
 
 function create()
 {
-    this.add.image(this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground');
+    this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground00' ) ;
+    this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;
     
-    platforms = this.physics.add.staticGroup();
-    platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    platforms.create(600, 400, 'ground');
-    platforms.create(50, 250, 'ground');
-    platforms.create(750, 220, 'ground');
+    gPlatforms = this.physics.add.staticGroup() ;
+    //this.physics.children.entries.length
+    for (let i = 0; i < 13 ; ++i) 
+    {
+        let lOffsetX = (32 + 64 * i) ;
+        gPlatforms.create( lOffsetX, 568, ('Volcano Ground 02') ).setScale(0.5).refreshBody() ;        
+    }
+    gPlatforms.create( 400 , 400, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
+    for (let i = 0; i < 12 ; ++i) 
+    {
+        let lOffsetX = (432 + 32 * i) ;
+        gPlatforms.create( lOffsetX , 400, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
+    }
+    gPlatforms.create( 273 , 250, ('Volcano Ground 12') ).setScale(0.25).refreshBody() ;
+    for (let i = 0; i < 8 ; ++i) 
+    {
+        let lOffsetX = (16 + 32 * i) ;
+        gPlatforms.create( lOffsetX , 250, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
+    }
+    gPlatforms.create( 558 , 220, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
+    for (let i = 0; i < 7 ; ++i) 
+    {
+        let lOffsetX = (590 + 32 * i) ;
+        gPlatforms.create( lOffsetX , 220, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
+    }
 
     createAnimationSequences( this, 'Idle', 18, -1, 'knight' ) ;
     createAnimationSequences( this, 'Dying', 15, 1, 'knight' ) ;
@@ -217,8 +237,8 @@ function create()
     gEnemyMummy.body.setGravityY(300); 
     gEnemyMummy.body.setSize( 400, 550 ) ;
 
-    this.physics.add.collider( player, platforms );
-    this.physics.add.collider( gEnemyMummy, platforms );
+    this.physics.add.collider( player, gPlatforms );
+    this.physics.add.collider( gEnemyMummy, gPlatforms );
     this.physics.add.collider( gEnemyMummy, player );
 
     gKeyA = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.A ) ;
@@ -348,4 +368,29 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
         }
     }
     */
+   pContext.load.image( 'Volcano Ground 01', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png') ;
+   pContext.load.image( 'Volcano Ground 02', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 02.png') ;
+   pContext.load.image( 'Volcano Ground 03', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 03.png') ;
+   pContext.load.image( 'Volcano Ground 04', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 04.png') ;
+   pContext.load.image( 'Volcano Ground 05', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 05.png') ;
+   pContext.load.image( 'Volcano Ground 06', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 06.png') ;
+   pContext.load.image( 'Volcano Ground 07', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 07.png') ;
+   pContext.load.image( 'Volcano Ground 08', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 08.png') ;
+   pContext.load.image( 'Volcano Ground 09', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 09.png') ;
+   pContext.load.image( 'Volcano Ground 10', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 10.png') ;
+   pContext.load.image( 'Volcano Ground 11', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 11.png') ;
+   pContext.load.image( 'Volcano Ground 12', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 12.png') ;
+
+   pContext.load.image( 'Volcano Ground Additional 01', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 01.png') ;
+   pContext.load.image( 'Volcano Ground Additional 02', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 02.png') ;
+   pContext.load.image( 'Volcano Ground Additional 03', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 03.png') ;
+   pContext.load.image( 'Volcano Ground Additional 04', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 04.png') ;
+   pContext.load.image( 'Volcano Ground Additional 05', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 05.png') ;
+   pContext.load.image( 'Volcano Ground Additional 06', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 06.png') ;
+   pContext.load.image( 'Volcano Ground Additional 07', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 07.png') ;
+
+   pContext.load.image( 'Volcano Ladder', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ladder.png') ;
+   pContext.load.image( 'Volcano Wooden Barrel', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Barrel.png') ;
+   pContext.load.image( 'Volcano Wooden Box', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Box.png') ;
+   
 }
