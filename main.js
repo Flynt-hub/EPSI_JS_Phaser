@@ -394,3 +394,10 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
    pContext.load.image( 'Volcano Wooden Box', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Box.png') ;
    
 }
+function checkDistance(pActor1, pActor2) // TODO @David base function for first AI behavior
+{
+    let dx = x1 - x2;
+    let dy = y1 - y2;
+
+    return Math.sqrt(dx * dx + dy * dy) ;
+}
