@@ -219,9 +219,8 @@ function create()
     createAnimationSequences( this, 'Throwing', 12, 1, 'mummy' ) ;
     createAnimationSequences( this, 'Throwing in The Air', 12, 1, 'mummy' ) ;
 
-    console.log(this.anims) ;
-
     player               = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('Idle') ;
+    player.name          = "knight" ;
     player.displayWidth  = 100 ;
     player.displayHeight = 100 ;
     player.setBounce(0.2);
@@ -229,7 +228,11 @@ function create()
     player.body.setGravityY(300); 
     player.body.setSize( 340, 550 ) ;
 
-    gEnemyMummy               = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle').setScale(0.15);
+    console.log(player.body);
+    console.log(player);
+
+    gEnemyMummy               = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle') ;
+    gEnemyMummy.name          = "mummy" ;
     gEnemyMummy.displayWidth  = 100 ;
     gEnemyMummy.displayHeight = 100 ;
     gEnemyMummy.setBounce(0.2);
@@ -265,13 +268,13 @@ function update()
     {
         player.setVelocityX(-160);
         player.flipX = true ;
-        player.anims.play( 'Running', true ) ;
+        player.anims.play( 'knightRunning', true ) ;
     }
     else if (cursors.right.isDown)
     {
         player.setVelocityX(160);
         player.flipX = false ;        
-        player.anims.play( 'Running', true ) ;
+        player.anims.play( 'knightRunning', true ) ;
     }
     else if ( gKeyA.isDown ) { player.anims.play( 'Dying' , true) ; }
     else if ( gKeyZ.isDown ) { player.anims.play( 'Falling Down' , true) ; }
@@ -296,6 +299,8 @@ function update()
     {
         player.setVelocityY(-450);
     }
+
+    AI(player, gEnemyMummy) ;
 }
 
 function loadAnimationSequences(pContext, pAnimationName, pNumberOfSequences, pFolderName, pModelName)
@@ -394,10 +399,44 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
    pContext.load.image( 'Volcano Wooden Box', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Box.png') ;
    
 }
-function checkDistance(pActor1, pActor2) // TODO @David base function for first AI behavior
-{
-    let dx = x1 - x2;
-    let dy = y1 - y2;
+function AI(pActor1, pActor2) // TODO @David base function for first AI behavior
+{   
+    let lDeltaX = pActor1.body.position.x - pActor2.body.position.x ;
+    let lDeltaY = pActor1.body.position.y - pActor2.body.position.y ;
 
-    return Math.sqrt(dx * dx + dy * dy) ;
+    if ( lDeltaX > 100 )
+    {
+        pActor2.setVelocityX(160) ;
+        pActor2.flipX = false ;
+        pActor2.anims.play( pActor2.name + 'Running', true ) ;
+    }
+    else if ( lDeltaX < -100 )
+    {
+        pActor2.setVelocityX(-160) ;
+        pActor2.flipX = true ;
+        pActor2.anims.play( pActor2.name + 'Running', true ) ;
+    }    
+    if ( lDeltaY < -50 && pActor2.body.touching.down )
+    {
+        pActor2.setVelocityY(-450) ;
+        //pActor2.flipX = true ;
+        pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+    }
+    if ( lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 )
+    {
+        pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
+    }
+    if ( lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 )
+    {
+        pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
+    }
+    //return Math.sqrt(dx * dx + dy * dy) ;
+}
+
+function attack (pContext, pActor)
+{
+    // https://www.html5gamedevs.com/topic/45134-fighting-game-hitboxes-implementation/
+    /**
+     * to detect collision when an actor play attack animation, a trick would be to create a collision box in front of him for a short time and detect collision with another actor
+    */
 }
