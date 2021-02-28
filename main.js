@@ -49,6 +49,16 @@ let gKeyF ;
 let gKeyG ;
 let gKeyH ;
 
+const gGroundY    = 568 ;
+const gPlatform1Y = 400 ;
+const gPlatform2Y = 250 ;
+const gPlatform3Y = 220 ;
+
+const gJumpPointGroundToPlatform1 = {xMin: 207, xMax: 255, y: 474} ;
+const gJumpPointPlatform1ToPlatform2 = {xMin: 364, xMax: 415, y: 322} ;
+const gJumpPointPlatform2ToPlatform3 = {xMin: 280, xMax: 286, y: 172} ;
+
+
 
 function preload()
 {
@@ -244,6 +254,8 @@ function create()
     this.physics.add.collider( gEnemyMummy, gPlatforms );
     this.physics.add.collider( gEnemyMummy, player );
 
+    //console.log(this.physics.add) ;
+
     gKeyA = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.A ) ;
     gKeyZ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Z ) ;
     gKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
@@ -295,9 +307,11 @@ function update()
         player.anims.play( 'Idle', true ) ;
     }
 
-    if (cursors.space.isDown /*&& player.body.touching.down*/)
+    if ( cursors.space.isDown && player.body.touching.down )
     {
         player.setVelocityY(-450);
+        //console.log(player.body.position.x) ;
+        //console.log(player.body.position.y) ;
     }
 
     AI(player, gEnemyMummy) ;
@@ -399,38 +413,129 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
    pContext.load.image( 'Volcano Wooden Box', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Box.png') ;
    
 }
-function AI(pActor1, pActor2) // TODO @David base function for first AI behavior
+function AI( pActor1, pActor2 ) 
 {   
-    let lDeltaX = pActor1.body.position.x - pActor2.body.position.x ;
-    let lDeltaY = pActor1.body.position.y - pActor2.body.position.y ;
+    const lDeltaX = pActor1.body.position.x - pActor2.body.position.x ;
+    const lDeltaY = pActor1.body.position.y - pActor2.body.position.y ;
 
-    if ( lDeltaX > 100 )
+    const lActor1IsAtRight      = lDeltaX > 100 ;
+    const lActor1IsAtLeft       = lDeltaX < -100 ;
+    const lActor1IsUpper        = lDeltaY < -50 ;
+    const lActor1IsCloseToRight = lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 ;
+    const lActor1IsCloseToLeft  = lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 ;
+    if ( lActor1IsAtRight && !lActor1IsUpper )
     {
         pActor2.setVelocityX(160) ;
         pActor2.flipX = false ;
         pActor2.anims.play( pActor2.name + 'Running', true ) ;
     }
-    else if ( lDeltaX < -100 )
+    else if ( lActor1IsAtLeft && !lActor1IsUpper )
     {
         pActor2.setVelocityX(-160) ;
         pActor2.flipX = true ;
         pActor2.anims.play( pActor2.name + 'Running', true ) ;
     }    
-    if ( lDeltaY < -50 && pActor2.body.touching.down )
+    if ( lActor1IsUpper && pActor2.body.touching.down )
     {
-        pActor2.setVelocityY(-450) ;
-        //pActor2.flipX = true ;
-        pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+        const lActor2IsAtGround  = pActor2.body.position.y < ( gJumpPointGroundToPlatform1.y + 10 ) && pActor2.body.position.y > ( gJumpPointGroundToPlatform1.y - 10 ) ;
+        const lActor2IsPlatform1 = pActor2.body.position.y < ( gJumpPointPlatform1ToPlatform2.y + 10 ) && pActor2.body.position.y > ( gJumpPointPlatform1ToPlatform2.y - 10 ) ;
+        const lActor2IsPlatform2 = pActor2.body.position.y < ( gJumpPointPlatform2ToPlatform3.y + 10 ) && pActor2.body.position.y > ( gJumpPointPlatform2ToPlatform3.y - 10 ) ;
+        const niktamer = gJumpPointGroundToPlatform1.y + 10 ;
+        const niktonper = gJumpPointGroundToPlatform1.y - 10 ;
+        console.log("mummy y : " + pActor2.body.position.y + "ground interval : [" + niktamer + " - " + niktonper + "]") ;
+        if ( lActor2IsAtGround )
+        {
+            const lActor2IsLeftToGroundPoint  = pActor2.body.position.x > gJumpPointGroundToPlatform1.xMax ;
+            const lActor2IsRightToGroundPoint = pActor2.body.position.x < gJumpPointGroundToPlatform1.xMin ;
+            const lActor2IsWellPlacedToJump   = pActor2.body.position.x > gJumpPointGroundToPlatform1.xMin && pActor2.body.position.x < gJumpPointGroundToPlatform1.xMax ;
+            if( lActor2IsLeftToGroundPoint )
+            {
+                pActor2.setVelocityX(-160) ;
+                pActor2.flipX = true ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("ground : going to right") ;
+            }
+            else if( lActor2IsRightToGroundPoint )
+            {
+                pActor2.setVelocityX(160) ;
+                pActor2.flipX = false ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("ground : going to left") ;
+            }
+            else if( lActor2IsWellPlacedToJump )
+            {
+                pActor2.setVelocityY(-450) ;
+                pActor2.setVelocityX(160) ;
+                pActor2.flipX = false ;
+                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                console.log("ground : well placed") ;
+            }            
+        }
+        else if ( lActor2IsPlatform1 )
+        {
+            const lActor2IsLeftToPlatform1Point  = pActor2.body.position.x > gJumpPointPlatform1ToPlatform2.xMax ;
+            const lActor2IsRightToPlatform1Point = pActor2.body.position.x < gJumpPointPlatform1ToPlatform2.xMin ;
+            const lActor2IsWellPlacedToJump      = pActor2.body.position.x > gJumpPointPlatform1ToPlatform2.xMin && pActor2.body.position.x < gJumpPointPlatform1ToPlatform2.xMax ;
+            if( lActor2IsLeftToPlatform1Point )
+            {
+                pActor2.setVelocityX(-160) ;
+                pActor2.flipX = true ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("platform1 : going to right") ;
+            }
+            else if( lActor2IsRightToPlatform1Point )
+            {
+                pActor2.setVelocityX(160) ;
+                pActor2.flipX = false ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("platform1 : going to left") ;
+            }
+            else if( lActor2IsWellPlacedToJump )
+            {
+                pActor2.setVelocityY(-450) ;
+                pActor2.setVelocityX(-160) ;
+                pActor2.flipX = true ;
+                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                console.log("platform1 : well placed") ;
+            }  
+        }
+        else if ( lActor2IsPlatform2 )
+        {
+            const lActor2IsLeftToPlatform2Point  = pActor2.body.position.x > gJumpPointPlatform2ToPlatform3.xMax ;
+            const lActor2IsRightToPlatform2Point = pActor2.body.position.x < gJumpPointPlatform2ToPlatform3.xMin ;
+            const lActor2IsWellPlacedToJump      = pActor2.body.position.x > gJumpPointPlatform2ToPlatform3.xMin && pActor2.body.position.x < gJumpPointPlatform2ToPlatform3.xMax ;
+            if( lActor2IsLeftToPlatform2Point )
+            {
+                pActor2.setVelocityX(-160) ;
+                pActor2.flipX = true ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("platform2 : going to left") ;
+            }
+            else if( lActor2IsRightToPlatform2Point )
+            {
+                pActor2.setVelocityX(160) ;
+                pActor2.flipX = false ;
+                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                console.log("platform2 : going to right") ;
+            }
+            else if( lActor2IsWellPlacedToJump )
+            {
+                pActor2.setVelocityY(-450) ;
+                pActor2.setVelocityX(160) ;
+                pActor2.flipX = false ;
+                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                console.log("platform2 : well placed") ;
+            }
+        }
     }
-    if ( lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 )
+    if ( lActor1IsCloseToRight )
     {
         pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
     }
-    if ( lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 )
+    else if ( lActor1IsCloseToLeft )
     {
         pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
     }
-    //return Math.sqrt(dx * dx + dy * dy) ;
 }
 
 function attack (pContext, pActor)
@@ -440,3 +545,7 @@ function attack (pContext, pActor)
      * to detect collision when an actor play attack animation, a trick would be to create a collision box in front of him for a short time and detect collision with another actor
     */
 }
+
+/**
+ * TODO @David, instead of spend days on pathfinding, we could create some points at each level to indicate to AI to reach those point to jump to upper platform to get player
+ */
