@@ -208,7 +208,7 @@ function create()
     createAnimationSequences( this, 'Kicking', 12, 0, 'knight' ) ;
     createAnimationSequences( this, 'Run Slashing', 12, 0, 'knight' ) ;
     createAnimationSequences( this, 'Run Throwing', 12, 0, 'knight' ) ;
-    createAnimationSequences( this, 'Running', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Running', 12, -1, 'knight' ) ;
     createAnimationSequences( this, 'Slashing', 12, 0, 'knight' ) ;
     createAnimationSequences( this, 'Slashing in The Air', 12, 0, 'knight' ) ;
     createAnimationSequences( this, 'Sliding', 6, 1, 'knight' ) ;
@@ -307,11 +307,12 @@ function update()
     else if ( gKeyF.isDown ) { player.anims.play( 'knightSliding' , true) ; }
     else if ( gKeyG.isDown ) { player.anims.play( 'knightThrowing' , true) ; }
     else if ( gKeyH.isDown ) { player.anims.play( 'knightThrowing in The Air' , true) ; }
-    else if ( !player.anims.isPlaying )
+    else if ( !player.anims.isPlaying || player.anims.getName() === 'knightRunning')
     {
         player.setVelocityX(0) ;
-        player.anims.play( 'Idle', true ) ;
+        player.anims.play( 'knightIdle', true ) ;
     }
+    console.log(player.anims.getName()) ;
     if ( cursors.space.isDown && player.body.touching.down )
     {
         player.setVelocityY(-450);
