@@ -231,7 +231,7 @@ function create()
     createAnimationSequences( this, 'Throwing', 12, 1, 'mummy' ) ;
     createAnimationSequences( this, 'Throwing in The Air', 12, 1, 'mummy' ) ;
 
-    player               = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('Idle') ;
+    player               = this.physics.add.sprite( 50, 400, 'knightIdle000' ).play('knightIdle') ;
     player.name          = "knight" ;
     player.displayWidth  = 100 ;
     player.displayHeight = 100 ;
@@ -243,7 +243,7 @@ function create()
     console.log(player.body);
     console.log(player);
 
-    gEnemyMummy               = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('Idle') ;
+    gEnemyMummy               = this.physics.add.sprite( 750, 200, 'mummyIdle000' ).play('mummyIdle') ;
     gEnemyMummy.name          = "mummy" ;
     gEnemyMummy.displayWidth  = 100 ;
     gEnemyMummy.displayHeight = 100 ;
@@ -277,7 +277,7 @@ function create()
 
 function update()
 {
-    
+    player.setVelocityX(0);
     if (cursors.left.isDown)
     {
         player.setVelocityX(-160);
@@ -310,7 +310,7 @@ function update()
     else if ( !player.anims.isPlaying )
     {
         player.setVelocityX(0) ;
-        player.anims.play( 'Idle', true ) ;
+        player.anims.play( 'knightIdle', true ) ;
     }
     if ( cursors.space.isDown && player.body.touching.down )
     {
