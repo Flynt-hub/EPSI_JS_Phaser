@@ -200,20 +200,20 @@ function create()
     }
 
     createAnimationSequences( this, 'Idle', 18, -1, 'knight' ) ;
-    createAnimationSequences( this, 'Dying', 15, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Falling Down', 6, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Hurt', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Jump Loop', 6, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Jump Start', 6, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Kicking', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Run Slashing', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Run Throwing', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Running', 12, -1, 'knight' ) ;
-    createAnimationSequences( this, 'Slashing', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Slashing in The Air', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Dying', 15, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Falling Down', 6, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Hurt', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Jump Loop', 6, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Jump Start', 6, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Kicking', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Run Slashing', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Run Throwing', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Running', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Slashing', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Slashing in The Air', 12, 0, 'knight' ) ;
     createAnimationSequences( this, 'Sliding', 6, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Throwing', 12, 1, 'knight' ) ;
-    createAnimationSequences( this, 'Throwing in The Air', 12, 1, 'knight' ) ;
+    createAnimationSequences( this, 'Throwing', 12, 0, 'knight' ) ;
+    createAnimationSequences( this, 'Throwing in The Air', 12, 0, 'knight' ) ;
 
     createAnimationSequences( this, 'Idle', 18, -1, 'mummy' ) ;
     createAnimationSequences( this, 'Dying', 15, 1, 'mummy' ) ;
@@ -297,22 +297,21 @@ function update()
     else if ( gKeyR.isDown ) { player.anims.play( 'knightJump Loop' , true) ; }
     else if ( gKeyT.isDown ) { player.anims.play( 'knightKicking' , true) ; }
     else if ( gKeyY.isDown ) { player.anims.play( 'knightRun Slashing' , true) ; }
-    else if ( gKeyQ.isDown )
+    else if ( gKeyQ.isDown ) { player.anims.play( 'knightRun Throwing' , true) ; }
+    else if ( gKeyS.isDown )
     {
-        player.anims.play( 'knightRun Throwing' , true) ;
-        attack( this, gPlayerAttackCollider, player, gEnemyMummy) ;
+        player.anims.play( 'knightSlashing' , true) ;
+        //attack( this, gPlayerAttackCollider, player, gEnemyMummy) ;
     }
-    else if ( gKeyS.isDown ) { player.anims.play( 'knightSlashing' , true) ; }
     else if ( gKeyD.isDown ) { player.anims.play( 'knightSlashing in The Air' , true) ; }
     else if ( gKeyF.isDown ) { player.anims.play( 'knightSliding' , true) ; }
     else if ( gKeyG.isDown ) { player.anims.play( 'knightThrowing' , true) ; }
     else if ( gKeyH.isDown ) { player.anims.play( 'knightThrowing in The Air' , true) ; }
-    else
+    else if ( !player.anims.isPlaying )
     {
         player.setVelocityX(0) ;
         player.anims.play( 'Idle', true ) ;
     }
-
     if ( cursors.space.isDown && player.body.touching.down )
     {
         player.setVelocityY(-450);
