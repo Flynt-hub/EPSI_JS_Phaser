@@ -36,6 +36,8 @@ let player ;
 let gEnemyMummy ;
 let cursor ;
 
+let gPlayerAttackCollider ;
+
 let gKeyA ;
 let gKeyZ ;
 let gKeyE ;
@@ -288,19 +290,23 @@ function update()
         player.flipX = false ;        
         player.anims.play( 'knightRunning', true ) ;
     }
-    else if ( gKeyA.isDown ) { player.anims.play( 'Dying' , true) ; }
-    else if ( gKeyZ.isDown ) { player.anims.play( 'Falling Down' , true) ; }
-    else if ( gKeyE.isDown ) { player.anims.play( 'Hurt' , true) ; }
-    else if ( gKeyE.isDown ) { player.anims.play( 'Jump Start' , true) ; }
-    else if ( gKeyR.isDown ) { player.anims.play( 'Jump Loop' , true) ; }
-    else if ( gKeyT.isDown ) { player.anims.play( 'Kicking' , true) ; }
-    else if ( gKeyY.isDown ) { player.anims.play( 'Run Slashing' , true) ; }
-    else if ( gKeyQ.isDown ) { player.anims.play( 'Run Throwing' , true) ; }
-    else if ( gKeyS.isDown ) { player.anims.play( 'Slashing' , true) ; }
-    else if ( gKeyD.isDown ) { player.anims.play( 'Slashing in The Air' , true) ; }
-    else if ( gKeyF.isDown ) { player.anims.play( 'Sliding' , true) ; }
-    else if ( gKeyG.isDown ) { player.anims.play( 'Throwing' , true) ; }
-    else if ( gKeyH.isDown ) { player.anims.play( 'Throwing in The Air' , true) ; }
+    else if ( gKeyA.isDown ) { player.anims.play( 'knightDying' , true) ; }
+    else if ( gKeyZ.isDown ) { player.anims.play( 'knightFalling Down' , true) ; }
+    else if ( gKeyE.isDown ) { player.anims.play( 'knightHurt' , true) ; }
+    else if ( gKeyE.isDown ) { player.anims.play( 'knightJump Start' , true) ; }
+    else if ( gKeyR.isDown ) { player.anims.play( 'knightJump Loop' , true) ; }
+    else if ( gKeyT.isDown ) { player.anims.play( 'knightKicking' , true) ; }
+    else if ( gKeyY.isDown ) { player.anims.play( 'knightRun Slashing' , true) ; }
+    else if ( gKeyQ.isDown )
+    {
+        player.anims.play( 'knightRun Throwing' , true) ;
+        attack( this, gPlayerAttackCollider, player, gEnemyMummy) ;
+    }
+    else if ( gKeyS.isDown ) { player.anims.play( 'knightSlashing' , true) ; }
+    else if ( gKeyD.isDown ) { player.anims.play( 'knightSlashing in The Air' , true) ; }
+    else if ( gKeyF.isDown ) { player.anims.play( 'knightSliding' , true) ; }
+    else if ( gKeyG.isDown ) { player.anims.play( 'knightThrowing' , true) ; }
+    else if ( gKeyH.isDown ) { player.anims.play( 'knightThrowing in The Air' , true) ; }
     else
     {
         player.setVelocityX(0) ;
@@ -538,12 +544,15 @@ function AI( pActor1, pActor2 )
     }
 }
 
-function attack (pContext, pActor)
+function attack (pContext, pAttackCollider, pActor1, pActor2)
 {
     // https://www.html5gamedevs.com/topic/45134-fighting-game-hitboxes-implementation/
     /**
      * to detect collision when an actor play attack animation, a trick would be to create a collision box in front of him for a short time and detect collision with another actor
     */
+   pAttackCollider = pContext.add.image( pActor1.body.position.x + 50, pActor1.body.position.y + 10 ) ;
+   pAttackCollider.body.setCircle(10) ;
+   pAttackCollider.setDebugBodyColor(0xffff00) ;
 }
 
 /**
