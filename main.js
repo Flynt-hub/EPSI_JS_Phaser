@@ -371,176 +371,146 @@ function createAnimationSequences( pContext, pAnimationName, pNumberOfSequences,
 }
 function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfParts )
 {
-    /* TODO @David during image loading every space are replace with "%20", this is not a problem during animation sequence loading, need to fix this
     let lPartPath = './assets/Volcano Level Set/PNG/' + pPartSetName + '/Volcano Level Set_' + pPartSetName + ' - ' + pPartsName + ' ' ;
-    for (let i = 1; i <= pNumberOfParts; ++i) 
-    {
-        if ( i < 10 )
-        {
-            let lCompletePartPath = lPartPath + '0' + i + '.png' ;
-            let lContextPartName  = pPartsName + '0' + i ;
-            //pContext.load.image( lContextPartName, lCompletePartPath ) ;
-            console.log(lCompletePartPath) ;
-            console.log(lContextPartName) ;
+    let lCompletePartPath;
+    let lContextPartName;
+    for (let i = 1; i <= pNumberOfParts; ++i) {
+        if (i < 10) {
+            lCompletePartPath = lPartPath + '0' + i + '.png';
+            lContextPartName = 'Volcano ' + pPartsName + ' 0' + i;
+
+
+        } else {
+            lCompletePartPath = lPartPath + i + '.png';
+            lContextPartName = 'Volcano ' + pPartsName + ' ' + i;
         }
-        else
-        {
-            let lCompletePartPath = lPartPath + i  ;
-            let lContextPartName  = pPartsName + i ;
-            pContext.load.image( lContextPartName, lCompletePartPath ) ;
-            console.log(lCompletePartPath) ;
-            console.log(lContextPartName) ;
-        }
+        pContext.load.image(lContextPartName, lCompletePartPath);
+        console.log(lCompletePartPath);
+        console.log(lContextPartName);
     }
-    */
-   pContext.load.image( 'Volcano Ground 01', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 01.png') ;
-   pContext.load.image( 'Volcano Ground 02', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 02.png') ;
-   pContext.load.image( 'Volcano Ground 03', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 03.png') ;
-   pContext.load.image( 'Volcano Ground 04', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 04.png') ;
-   pContext.load.image( 'Volcano Ground 05', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 05.png') ;
-   pContext.load.image( 'Volcano Ground 06', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 06.png') ;
-   pContext.load.image( 'Volcano Ground 07', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 07.png') ;
-   pContext.load.image( 'Volcano Ground 08', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 08.png') ;
-   pContext.load.image( 'Volcano Ground 09', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 09.png') ;
-   pContext.load.image( 'Volcano Ground 10', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 10.png') ;
-   pContext.load.image( 'Volcano Ground 11', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 11.png') ;
-   pContext.load.image( 'Volcano Ground 12', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground 12.png') ;
-
-   pContext.load.image( 'Volcano Ground Additional 01', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 01.png') ;
-   pContext.load.image( 'Volcano Ground Additional 02', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 02.png') ;
-   pContext.load.image( 'Volcano Ground Additional 03', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 03.png') ;
-   pContext.load.image( 'Volcano Ground Additional 04', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 04.png') ;
-   pContext.load.image( 'Volcano Ground Additional 05', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 05.png') ;
-   pContext.load.image( 'Volcano Ground Additional 06', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 06.png') ;
-   pContext.load.image( 'Volcano Ground Additional 07', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ground Additional 07.png') ;
-
-   pContext.load.image( 'Volcano Ladder', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Ladder.png') ;
-   pContext.load.image( 'Volcano Wooden Barrel', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Barrel.png') ;
-   pContext.load.image( 'Volcano Wooden Box', './assets/Volcano Level Set/PNG/Platformer/Volcano Level Set_Platformer - Wooden Box.png') ;
-   
 }
-function AI( pActor1, pActor2 ) 
+function AI( pTarget, pNpc )
 {   
-    const lDeltaX = pActor1.body.position.x - pActor2.body.position.x ;
-    const lDeltaY = pActor1.body.position.y - pActor2.body.position.y ;
+    const lDeltaX = pTarget.body.position.x - pNpc.body.position.x ;
+    const lDeltaY = pTarget.body.position.y - pNpc.body.position.y ;
 
-    const lActor1IsAtRight      = lDeltaX > 100 ;
-    const lActor1IsAtLeft       = lDeltaX < -100 ;
-    const lActor1IsUpper        = lDeltaY < -50 ;
-    const lActor1IsCloseToRight = lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 ;
-    const lActor1IsCloseToLeft  = lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 ;
-    if ( lActor1IsAtRight && !lActor1IsUpper )
+    const lTargetIsAtRight      = lDeltaX > 100 ;
+    const lTargetIsAtLeft       = lDeltaX < -100 ;
+    const lTargetIsUpper        = lDeltaY < -50 ;
+    const lTargetIsCloseToRight = lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 ;
+    const lTargetIsCloseToLeft  = lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 ;
+    if ( lTargetIsAtRight && !lTargetIsUpper )
     {
-        pActor2.setVelocityX(160) ;
-        pActor2.flipX = false ;
-        pActor2.anims.play( pActor2.name + 'Running', true ) ;
+        pNpc.setVelocityX(160) ;
+        pNpc.flipX = false ;
+        pNpc.anims.play( pNpc.name + 'Running', true ) ;
     }
-    else if ( lActor1IsAtLeft && !lActor1IsUpper )
+    else if ( lTargetIsAtLeft && !lTargetIsUpper )
     {
-        pActor2.setVelocityX(-160) ;
-        pActor2.flipX = true ;
-        pActor2.anims.play( pActor2.name + 'Running', true ) ;
+        pNpc.setVelocityX(-160) ;
+        pNpc.flipX = true ;
+        pNpc.anims.play( pNpc.name + 'Running', true ) ;
     }    
-    if ( lActor1IsUpper && pActor2.body.touching.down )
+    if ( lTargetIsUpper && pNpc.body.touching.down )
     {
-        const lActor2IsAtGround  = pActor2.body.position.y < ( gJumpPointGroundToPlatform1.y + 10 ) && pActor2.body.position.y > ( gJumpPointGroundToPlatform1.y - 10 ) ;
-        const lActor2IsPlatform1 = pActor2.body.position.y < ( gJumpPointPlatform1ToPlatform2.y + 10 ) && pActor2.body.position.y > ( gJumpPointPlatform1ToPlatform2.y - 10 ) ;
-        const lActor2IsPlatform2 = pActor2.body.position.y < ( gJumpPointPlatform2ToPlatform3.y + 10 ) && pActor2.body.position.y > ( gJumpPointPlatform2ToPlatform3.y - 10 ) ;
+        const lNpcIsAtGround  = pNpc.body.position.y < ( gJumpPointGroundToPlatform1.y + 10 ) && pNpc.body.position.y > ( gJumpPointGroundToPlatform1.y - 10 ) ;
+        const lNpcIsPlatform1 = pNpc.body.position.y < ( gJumpPointPlatform1ToPlatform2.y + 10 ) && pNpc.body.position.y > ( gJumpPointPlatform1ToPlatform2.y - 10 ) ;
+        const lNpcIsPlatform2 = pNpc.body.position.y < ( gJumpPointPlatform2ToPlatform3.y + 10 ) && pNpc.body.position.y > ( gJumpPointPlatform2ToPlatform3.y - 10 ) ;
         const niktamer = gJumpPointGroundToPlatform1.y + 10 ;
         const niktonper = gJumpPointGroundToPlatform1.y - 10 ;
-        console.log("mummy y : " + pActor2.body.position.y + "ground interval : [" + niktamer + " - " + niktonper + "]") ;
-        if ( lActor2IsAtGround )
+        console.log("mummy y : " + pNpc.body.position.y + "ground interval : [" + niktamer + " - " + niktonper + "]") ;
+        if ( lNpcIsAtGround )
         {
-            const lActor2IsLeftToGroundPoint  = pActor2.body.position.x > gJumpPointGroundToPlatform1.xMax ;
-            const lActor2IsRightToGroundPoint = pActor2.body.position.x < gJumpPointGroundToPlatform1.xMin ;
-            const lActor2IsWellPlacedToJump   = pActor2.body.position.x > gJumpPointGroundToPlatform1.xMin && pActor2.body.position.x < gJumpPointGroundToPlatform1.xMax ;
-            if( lActor2IsLeftToGroundPoint )
+            const lNpcIsLeftToGroundPoint  = pNpc.body.position.x > gJumpPointGroundToPlatform1.xMax ;
+            const lNpcIsRightToGroundPoint = pNpc.body.position.x < gJumpPointGroundToPlatform1.xMin ;
+            const lNpcIsWellPlacedToJump   = pNpc.body.position.x > gJumpPointGroundToPlatform1.xMin && pNpc.body.position.x < gJumpPointGroundToPlatform1.xMax ;
+            if( lNpcIsLeftToGroundPoint )
             {
-                pActor2.setVelocityX(-160) ;
-                pActor2.flipX = true ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(-160) ;
+                pNpc.flipX = true ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("ground : going to right") ;
             }
-            else if( lActor2IsRightToGroundPoint )
+            else if( lNpcIsRightToGroundPoint )
             {
-                pActor2.setVelocityX(160) ;
-                pActor2.flipX = false ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(160) ;
+                pNpc.flipX = false ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("ground : going to left") ;
             }
-            else if( lActor2IsWellPlacedToJump )
+            else if( lNpcIsWellPlacedToJump )
             {
-                pActor2.setVelocityY(-450) ;
-                pActor2.setVelocityX(160) ;
-                pActor2.flipX = false ;
-                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                pNpc.setVelocityY(-450) ;
+                pNpc.setVelocityX(160) ;
+                pNpc.flipX = false ;
+                pNpc.anims.play( pNpc.name + 'Jump Loop', true ) ;
                 console.log("ground : well placed") ;
             }            
         }
-        else if ( lActor2IsPlatform1 )
+        else if ( lNpcIsPlatform1 )
         {
-            const lActor2IsLeftToPlatform1Point  = pActor2.body.position.x > gJumpPointPlatform1ToPlatform2.xMax ;
-            const lActor2IsRightToPlatform1Point = pActor2.body.position.x < gJumpPointPlatform1ToPlatform2.xMin ;
-            const lActor2IsWellPlacedToJump      = pActor2.body.position.x > gJumpPointPlatform1ToPlatform2.xMin && pActor2.body.position.x < gJumpPointPlatform1ToPlatform2.xMax ;
-            if( lActor2IsLeftToPlatform1Point )
+            const lNpcIsLeftToPlatform1Point  = pNpc.body.position.x > gJumpPointPlatform1ToPlatform2.xMax ;
+            const lNpcIsRightToPlatform1Point = pNpc.body.position.x < gJumpPointPlatform1ToPlatform2.xMin ;
+            const lNpcIsWellPlacedToJump      = pNpc.body.position.x > gJumpPointPlatform1ToPlatform2.xMin && pNpc.body.position.x < gJumpPointPlatform1ToPlatform2.xMax ;
+            if( lNpcIsLeftToPlatform1Point )
             {
-                pActor2.setVelocityX(-160) ;
-                pActor2.flipX = true ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(-160) ;
+                pNpc.flipX = true ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("platform1 : going to right") ;
             }
-            else if( lActor2IsRightToPlatform1Point )
+            else if( lNpcIsRightToPlatform1Point )
             {
-                pActor2.setVelocityX(160) ;
-                pActor2.flipX = false ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(160) ;
+                pNpc.flipX = false ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("platform1 : going to left") ;
             }
-            else if( lActor2IsWellPlacedToJump )
+            else if( lNpcIsWellPlacedToJump )
             {
-                pActor2.setVelocityY(-450) ;
-                pActor2.setVelocityX(-160) ;
-                pActor2.flipX = true ;
-                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                pNpc.setVelocityY(-450) ;
+                pNpc.setVelocityX(-160) ;
+                pNpc.flipX = true ;
+                pNpc.anims.play( pNpc.name + 'Jump Loop', true ) ;
                 console.log("platform1 : well placed") ;
             }  
         }
-        else if ( lActor2IsPlatform2 )
+        else if ( lNpcIsPlatform2 )
         {
-            const lActor2IsLeftToPlatform2Point  = pActor2.body.position.x > gJumpPointPlatform2ToPlatform3.xMax ;
-            const lActor2IsRightToPlatform2Point = pActor2.body.position.x < gJumpPointPlatform2ToPlatform3.xMin ;
-            const lActor2IsWellPlacedToJump      = pActor2.body.position.x > gJumpPointPlatform2ToPlatform3.xMin && pActor2.body.position.x < gJumpPointPlatform2ToPlatform3.xMax ;
-            if( lActor2IsLeftToPlatform2Point )
+            const lNpcIsLeftToPlatform2Point  = pNpc.body.position.x > gJumpPointPlatform2ToPlatform3.xMax ;
+            const lNpcIsRightToPlatform2Point = pNpc.body.position.x < gJumpPointPlatform2ToPlatform3.xMin ;
+            const lNpcIsWellPlacedToJump      = pNpc.body.position.x > gJumpPointPlatform2ToPlatform3.xMin && pNpc.body.position.x < gJumpPointPlatform2ToPlatform3.xMax ;
+            if( lNpcIsLeftToPlatform2Point )
             {
-                pActor2.setVelocityX(-160) ;
-                pActor2.flipX = true ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(-160) ;
+                pNpc.flipX = true ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("platform2 : going to left") ;
             }
-            else if( lActor2IsRightToPlatform2Point )
+            else if( lNpcIsRightToPlatform2Point )
             {
-                pActor2.setVelocityX(160) ;
-                pActor2.flipX = false ;
-                pActor2.anims.play( pActor2.name + 'Running', true ) ;
+                pNpc.setVelocityX(160) ;
+                pNpc.flipX = false ;
+                pNpc.anims.play( pNpc.name + 'Running', true ) ;
                 console.log("platform2 : going to right") ;
             }
-            else if( lActor2IsWellPlacedToJump )
+            else if( lNpcIsWellPlacedToJump )
             {
-                pActor2.setVelocityY(-450) ;
-                pActor2.setVelocityX(160) ;
-                pActor2.flipX = false ;
-                pActor2.anims.play( pActor2.name + 'Jump Loop', true ) ;
+                pNpc.setVelocityY(-450) ;
+                pNpc.setVelocityX(160) ;
+                pNpc.flipX = false ;
+                pNpc.anims.play( pNpc.name + 'Jump Loop', true ) ;
                 console.log("platform2 : well placed") ;
             }
         }
     }
-    if ( lActor1IsCloseToRight )
+    if ( lTargetIsCloseToRight )
     {
-        pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
+        pNpc.anims.play( pNpc.name + 'Slashing', true ) ;
     }
-    else if ( lActor1IsCloseToLeft )
+    else if ( lTargetIsCloseToLeft )
     {
-        pActor2.anims.play( pActor2.name + 'Slashing', true ) ;
+        pNpc.anims.play( pNpc.name + 'Slashing', true ) ;
     }
 }
 
