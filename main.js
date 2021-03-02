@@ -178,7 +178,7 @@ function create()
     for (let i = 0; i < 13 ; ++i) 
     {
         let lOffsetX = (32 + 64 * i) ;
-        gPlatforms.create( lOffsetX, 568, ('Volcano Ground 02') ).setScale(0.5).refreshBody() ;        
+        gPlatforms.create( lOffsetX, 568, ('Volcano Ground 02') ).setScale(0.5).refreshBody() ;
     }
     gPlatforms.create( 400 , 400, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
     for (let i = 0; i < 12 ; ++i) 
@@ -192,11 +192,11 @@ function create()
         let lOffsetX = (16 + 32 * i) ;
         gPlatforms.create( lOffsetX , 250, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
     }
-    gPlatforms.create( 558 , 220, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
-    for (let i = 0; i < 7 ; ++i) 
+    gPlatforms.create( 526 , 180, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
+    for (let i = 0; i < 9 ; ++i)
     {
-        let lOffsetX = (590 + 32 * i) ;
-        gPlatforms.create( lOffsetX , 220, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
+        let lOffsetX = (558 + 32 * i) ;
+        gPlatforms.create( lOffsetX , 180, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;
     }
 
     createAnimationSequences( this, 'Idle', 18, -1, 'knight' ) ;
@@ -390,15 +390,17 @@ function loadVolcanoLevelParts( pContext, pPartSetName, pPartsName, pNumberOfPar
     }
 }
 function AI( pTarget, pNpc )
-{   
-    const lDeltaX = pTarget.body.position.x - pNpc.body.position.x ;
-    const lDeltaY = pTarget.body.position.y - pNpc.body.position.y ;
+{
+    const lConstante = {swordRange: 65};
+    const lDeltaX = pTarget.body.position.x - pNpc.body.position.x;
+    const lDeltaY = pTarget.body.position.y - pNpc.body.position.y;
 
-    const lTargetIsAtRight      = lDeltaX > 100 ;
-    const lTargetIsAtLeft       = lDeltaX < -100 ;
+    const lTargetIsAtRight      = lDeltaX > lConstante.swordRange;
+    const lTargetIsAtLeft       = lDeltaX < - lConstante.swordRange ;
     const lTargetIsUpper        = lDeltaY < -50 ;
-    const lTargetIsCloseToRight = lDeltaX > 0 && lDeltaX < 100 && lDeltaY > -50 && lDeltaY < 50 ;
-    const lTargetIsCloseToLeft  = lDeltaX < 0 && lDeltaX > -100 && lDeltaY > -50 && lDeltaY < 50 ;
+    const lTargetIsCloseToRight = lDeltaX > 0 && lDeltaX < lConstante.swordRange && lDeltaY > -50 && lDeltaY < 50 ;
+    const lTargetIsCloseToLeft  = lDeltaX < 0 && lDeltaX > - lConstante.swordRange && lDeltaY > -50 && lDeltaY < 50 ;
+
     if ( lTargetIsAtRight && !lTargetIsUpper )
     {
         pNpc.setVelocityX(160) ;
@@ -506,10 +508,12 @@ function AI( pTarget, pNpc )
     }
     if ( lTargetIsCloseToRight )
     {
+        pNpc.flipX = false ;
         pNpc.anims.play( pNpc.name + 'Slashing', true ) ;
     }
     else if ( lTargetIsCloseToLeft )
     {
+        pNpc.flipX = true ;
         pNpc.anims.play( pNpc.name + 'Slashing', true ) ;
     }
 }
