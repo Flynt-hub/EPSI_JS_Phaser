@@ -129,7 +129,7 @@ function preload()
     this.load.image('ground', './assets/platform.png');
 
     console.log(this)
-    loadVolcanoLevelParts( this, 'Platformer', 'Ground', 13 ) ;
+    loadVolcanoLevelParts( this, 'Platformer', 'Ground', 12 ) ;
 
     loadAnimationSequences( this, 'Idle', 18, lKnightAnimationFolderName, 'knight' ) ;
     loadAnimationSequences( this, 'Dying', 15, lKnightAnimationFolderName, 'knight' ) ;
