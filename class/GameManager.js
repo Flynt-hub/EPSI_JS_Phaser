@@ -1,104 +1,121 @@
-class GameManager extends Phaser.Scene
+class GameManager
 {
-    constructor ()
+    constructor( pPhaserContext )
     {
-        super();
-        this.mPlatforms;
-        this.mScore = 0 ;
-        this.mScoreText ;
-        this.mBombs ;
-        this.mLevelManager = new LevelManager() ;
-        this.mFileLoader = new FileLoader() ;
+        this.mAssetsLoader = new AssetsLoader( pPhaserContext ) ;
+        this.mActorManager = new ActorManager( pPhaserContext ) ;
+        this.mIsPlayerCreated = false ;
+        this.mIsMummyCreated = false ;
+        this.mPlayer = null ;
+        this.mMummy = null ;
+        this.mPhaserContext = pPhaserContext ;        
     }
-
-    preload ()
+    loadAssets( pSprites )
     {
-        this.mLevelManager.setPhaserContext(this) ;
-        this.mFileLoader.setPhaserContext(this) ;
-        this.mFileLoader.loadSpriteForPlayer() ;
-    
-        this.load.image('sky', './assets/sky.png');
-        this.load.image('ground', './assets/platform.png');
-        this.load.image('star', './assets/star.png');
-        this.load.image('bomb', './assets/bomb.png');
-        this.load.spritesheet('dude', './assets/dude.png', { frameWidth: 32, frameHeight: 48 });
-    
-        this.load.image('volcanoBackground', './assets/Volcano Level Set/PNG/Background/Volcano Level Set_Background - Layer 00.png') ;
+        switch ( pSprites ) 
+        {
+            case 'mainMenu':
+                this.mAssetsLoader.loadMainMenuAssets() ;
+                break;
+            case 'level1':
+                this.mAssetsLoader.loadLevel1Assets() ;
+                break ;
+            case 'playerSprites':
+                this.mAssetsLoader.loadPlayerAssets() ;
+                this.createAnimationsSequences('player') ;
+                break ;
+            case 'mummySprites':
+                this.mAssetsLoader.loadMummyAssets() ;
+                this.createAnimationsSequences('mummy') ;
+                break ;
+            default:
+                break;
+        }
     }
-    create ()
+    getPlayer()
     {
-        this.add.image(this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground');
-        this.platforms = this.physics.add.staticGroup();
+        if ( !this.mIsPlayerCreated )
+        {
+            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000', 'knightIdle000') ; 
+            this.mIsPlayerCreated = true ;
+        }
+        return this.mPlayer ;
+    }
+    getMummy()
+    {
+        if ( !this.mIsMummyCreated )
+        {
+            this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000') ;
+            this.mIsMummyCreated = true ;
+        }
+        return this.mMummy ;
+    }
+    createAnimationsSequences( pActor )
+    {
+        switch (pActor)
+        {
+            case 'player':
+                this.setAnimationSequences( 'Idle', 18, -1, 'knight' ) ;
+                this.setAnimationSequences( 'Dying', 15, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Falling Down', 6, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Hurt', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Jump Loop', 6, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Jump Start', 6, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Kicking', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Run Slashing', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Run Throwing', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Running', 12, -1, 'knight' ) ;
+                this.setAnimationSequences( 'Slashing', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Slashing in The Air', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Sliding', 6, 1, 'knight' ) ;
+                this.setAnimationSequences( 'Throwing', 12, 0, 'knight' ) ;
+                this.setAnimationSequences( 'Throwing in The Air', 12, 0, 'knight' ) ;
+                break;
+            case 'mummy':
+                this.setAnimationSequences( 'Idle', 18, -1, 'mummy' ) ;
+                this.setAnimationSequences( 'Dying', 15, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Falling Down', 6, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Hurt', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Jump Loop', 6, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Jump Start', 6, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Kicking', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Run Slashing', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Run Throwing', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Running', 12, -1, 'mummy' ) ;
+                this.setAnimationSequences( 'Slashing', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Slashing in The Air', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Sliding', 6, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Throwing', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Throwing in The Air', 12, 1, 'mummy' ) ;
+                break ;
+            default:
+                break;
+        }
+    }
+    setAnimationSequences( pAnimationName, pNumberOfSequences, pSequenceRepeatNumber, pModelName )
+    {
+        let lKeyFrame        = function( pKeyName ){this.key = pKeyName ; } ;
+        let lAnimationKeyTab = [] ; 
     
-        this.platforms.create(400, 568, 'ground').setScale(2).refreshBody();
-    
-        this.platforms.create(600, 400, 'ground');
-        this.platforms.create(50, 250, 'ground');
-        this.platforms.create(750, 220, 'ground');    
-        
-        this.anims.create(
+        for (let i = 0; i < pNumberOfSequences; ++i) 
+        {
+            let lKeyName = pModelName + pAnimationName  + '0' ;
+            if ( i < 10 )
             {
-                key: 'idle',
-                frames: [
-                    {key: 'knightIdle000'},
-                    {key: 'knightIdle001'},
-                    {key: 'knightIdle002'},
-                    {key: 'knightIdle003'},
-                    {key: 'knightIdle004'},
-                    {key: 'knightIdle005'},
-                    {key: 'knightIdle006'},
-                    {key: 'knightIdle007'},
-                    {key: 'knightIdle008'},
-                    {key: 'knightIdle009'},
-                    {key: 'knightIdle010'},
-                    {key: 'knightIdle011'},
-                    {key: 'knightIdle012'},
-                    {key: 'knightIdle013'},
-                    {key: 'knightIdle014'},
-                    {key: 'knightIdle015'},
-                    {key: 'knightIdle016'},
-                    {key: 'knightIdle017'}
-                ],
-                frameRate: 15,
-                repeat: -1
+                lAnimationKeyTab.push( new lKeyFrame( lKeyName + '0' + i ) ) ;
             }
-        ) ;
-        this.player = this.physics.add.sprite(80, 225, 'knightIdle000').play('idle').setScale(0.1);    
-    
-        this.player.setBounce(0.2);
-        this.player.setCollideWorldBounds(true);
-        this.player.body.setGravityY(300)
-            
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
-            
-        this.physics.add.collider(this.player, this.platforms);
-        
-        this.cursors = this.input.keyboard.createCursorKeys();
-    }
-
-    update ()
-    {
-
+            else
+            {
+                lAnimationKeyTab.push( new lKeyFrame( lKeyName + i ) ) ;
+            }
+        }
+        this.mPhaserContext.anims.create(
+            {
+                key: pModelName + pAnimationName,
+                frames: lAnimationKeyTab,
+                frameRate: 15,
+                repeat: pSequenceRepeatNumber
+            }
+        ) ; 
     }
 }
-const ratio = Math.max(window.innerWidth / window.innerHeight, window.innerHeight / window.innerWidth)
-const DEFAULT_HEIGHT = 720 // any height you want
-const DEFAULT_WIDTH = ratio * DEFAULT_HEIGHT
-
-const config = {
-    type: Phaser.AUTO,
-    parent: 'phaser-example',
-    scale: {
-        mode: Phaser.Scale.ScaleModes.FIT,
-        parent: 'phaser-example',
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        width: 800,
-        height: 600
-    },
-    physics: {
-        default: 'arcade',
-        fps: 30
-    },
-    scene: [ GameManager ]
-};
-const game = new Phaser.Game(config);

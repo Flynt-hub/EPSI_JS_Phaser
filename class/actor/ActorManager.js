@@ -1,8 +1,7 @@
 class ActorManager
 {
-    constructor()
+    constructor( pPhaserContext )
     {
-        this.mActors      = [];
-        this.mGameManager = null;
+        this.mActors = [];
     }
 }
