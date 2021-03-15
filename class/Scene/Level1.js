@@ -12,6 +12,11 @@ class Level1 extends Phaser.Scene
         this.mKeyQ       = null ;
         this.mKeyS       = null ;
         this.mKeyD       = null ;
+        this.mImportantAiMapPoints = {
+            groundToPlatform1: { xMin: 207, xMax: 255, y: 474 },
+            platform1ToPlatform2: { xMin: 364, xMax: 415, y: 322 },
+            platform2ToPlatform3: { xMin: 280, xMax: 286, y: 172 }
+        }
     }
     preload()
     {
@@ -99,6 +104,14 @@ class Level1 extends Phaser.Scene
         this.physics.add.collider( this.mMummy, this.mPlayer ) ;
 
         console.log(this);
+    }
+    update()
+    {
+        if ( this.mKeyZ.isDown && this.mPlayer.body.touching.down ) { this.mPlayer.moveUp() ; }
+        else if ( this.mKeyQ.isDown ) { this.mPlayer.moveLeft() ; }
+        else if ( this.mKeyD.isDown ) { this.mPlayer.moveRight() ; }
+        else { this.mPlayer.update() ; }
+        this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
     }
 
     setPlatform()

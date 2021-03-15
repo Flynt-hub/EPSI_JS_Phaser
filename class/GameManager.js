@@ -45,7 +45,7 @@ class GameManager
         if ( !this.mIsMummyCreated )
         {
             this.createAnimationsSequences('mummy') ;
-            this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000') ;
+            this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
             this.mIsMummyCreated = true ;
         }
         return this.mMummy ;

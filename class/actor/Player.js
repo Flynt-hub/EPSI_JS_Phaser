@@ -2,7 +2,8 @@ class Player extends Actor
 {
     constructor( pPhaserContext, pX, pY, pKey, pFrame )
     {
-        super( pPhaserContext, pX, pY, pKey, pFrame ) ;        
+        super( pPhaserContext, pX, pY, pKey, pFrame ) ;  
+        this.mPhaserContext = pPhaserContext ;       
         this.setData( 'healthPoint', 100 ) ;
         this.setData( 'name', 'knight' ) ;
         this.displayWidth  = 100 ;
@@ -15,14 +16,24 @@ class Player extends Actor
     moveRight() 
     {
         this.body.velocity.x = this.getData("moveVelocity") ;
+        this.flipX           = false ;
+        this.anims.play( 'knightRunning', true ) ;
     }
     moveLeft() 
     {
         this.body.velocity.x = -this.getData("moveVelocity") ;
+        this.flipX           = true ;
+        this.anims.play( 'knightRunning', true ) ;
     }
     moveUp()
     {
-        this.body.velocity.y = -this.getData("jumpVelocity") ;
+        this.body.velocity.y = this.getData("jumpVelocity") ;
+        this.anims.play( 'knightJump Loop' , true ) ;
+    }
+    update()
+    {
+        this.body.velocity.x = 0 ;
+        this.anims.play( 'knightIdle' , true ) ;
     }
     ondestroy()
     {
