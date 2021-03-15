@@ -8,6 +8,10 @@ class Level1 extends Phaser.Scene
         this.mPlatform   = null ;
         this.mPlayer     = null ;
         this.mMummy      = null ;
+        this.mKeyZ       = null ;
+        this.mKeyQ       = null ;
+        this.mKeyS       = null ;
+        this.mKeyD       = null ;
     }
     preload()
     {
@@ -72,18 +76,23 @@ class Level1 extends Phaser.Scene
         this.GameManager.loadAssets('level1') ;
         this.GameManager.loadAssets('playerSprites') ;
         this.GameManager.loadAssets('mummySprites') ;
-
-        this.load.image("bomb", "assets/bomb.png") ;
     }
     create()
     {
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground00' ) ;
-        this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;
-        
+        this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;        
         this.setPlatform() ;
+
         this.mPlayer = this.GameManager.getPlayer() ;        
-        this.mMummy  = this.GameManager.getMummy()  ;
-        
+        this.mMummy  = this.GameManager.getMummy()  ;        
+
+        this.mPlayer.anims.play( 'knightIdle' , true ) ;
+        this.mMummy.anims.play( 'mummyIdle', true ) ;
+
+        this.mKeyZ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Z ) ;
+        this.mKeyQ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Q ) ;
+        this.mKeyS = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.S ) ;
+        this.mKeyD = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.D ) ;
 
         this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlatform ) ;

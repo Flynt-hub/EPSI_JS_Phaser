@@ -22,11 +22,9 @@ class GameManager
                 break ;
             case 'playerSprites':
                 this.mAssetsLoader.loadPlayerAssets() ;
-                this.createAnimationsSequences('player') ;
                 break ;
             case 'mummySprites':
-                this.mAssetsLoader.loadMummyAssets() ;
-                this.createAnimationsSequences('mummy') ;
+                this.mAssetsLoader.loadMummyAssets() ;                
                 break ;
             default:
                 break;
@@ -36,7 +34,8 @@ class GameManager
     {
         if ( !this.mIsPlayerCreated )
         {
-            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000', '') ; 
+            this.createAnimationsSequences('player') ;
+            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ; 
             this.mIsPlayerCreated = true ;
         }
         return this.mPlayer ;
@@ -45,6 +44,7 @@ class GameManager
     {
         if ( !this.mIsMummyCreated )
         {
+            this.createAnimationsSequences('mummy') ;
             this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000') ;
             this.mIsMummyCreated = true ;
         }
