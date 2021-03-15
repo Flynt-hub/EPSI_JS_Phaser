@@ -36,7 +36,7 @@ class GameManager
     {
         if ( !this.mIsPlayerCreated )
         {
-            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000', 'knightIdle000') ; 
+            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000', '') ; 
             this.mIsPlayerCreated = true ;
         }
         return this.mPlayer ;

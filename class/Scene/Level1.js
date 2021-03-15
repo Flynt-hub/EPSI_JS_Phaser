@@ -72,20 +72,18 @@ class Level1 extends Phaser.Scene
         this.GameManager.loadAssets('level1') ;
         this.GameManager.loadAssets('playerSprites') ;
         this.GameManager.loadAssets('mummySprites') ;
+
+        this.load.image("bomb", "assets/bomb.png") ;
     }
     create()
     {
-        let connard = this.GameManager.getPlayer() ;
-        // this.mPlayer.setTexture('knightIdle000') ;
-        console.log(this.textures) ; 
-        //this.mPlayer.play('knightIdle') ;
-        // debugger ;
-        this.mMummy  = this.GameManager.getMummy() ;
-
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground00' ) ;
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;
-
-        this.setPlatform() ;   
+        
+        this.setPlatform() ;
+        this.mPlayer = this.GameManager.getPlayer() ;        
+        this.mMummy  = this.GameManager.getMummy()  ;
+        
 
         this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlatform ) ;

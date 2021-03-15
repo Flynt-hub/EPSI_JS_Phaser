@@ -5,8 +5,7 @@ class Actor extends Phaser.GameObjects.Sprite
         super( pPhaserContext, pX, pY, pKey, pFrame ) ;
         this.mPhaserContext = pPhaserContext ;
         this.mPhaserContext.add.existing(this) ;
-        this.mPhaserContext.physics.add.existing(this)
-        // this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
+        this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.setData( "isAlive", true) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
