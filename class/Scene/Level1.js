@@ -8,10 +8,12 @@ class Level1 extends Phaser.Scene
         this.mPlatform   = null ;
         this.mPlayer     = null ;
         this.mMummy      = null ;
-        this.mKeyZ       = null ;
-        this.mKeyQ       = null ;
-        this.mKeyS       = null ;
-        this.mKeyD       = null ;
+        this.mKeyJump       = null ;
+        this.mKeyLeft       = null ;
+        this.mKeyDown       = null ;
+        this.mKeyRight       = null ;
+        this.mKeyE       = null ;
+        this.mPlayerSword = null ;
         this.mImportantAiMapPoints = {
             groundToPlatform1: { xMin: 207, xMax: 255, y: 474 },
             platform1ToPlatform2: { xMin: 364, xMax: 415, y: 322 },
@@ -52,35 +54,35 @@ class Level1 extends Phaser.Scene
             }
         }) ;
 
-        lAssetText.setOrigin(0.5, 0.5) ;
-        lPercentText.setOrigin(0.5, 0.5) ;
-        lLoadingText.setOrigin(0.5, 0.5) ;
+        lAssetText.setOrigin( 0.5, 0.5 ) ;
+        lPercentText.setOrigin( 0.5, 0.5 ) ;
+        lLoadingText.setOrigin( 0.5, 0.5 ) ;
         lProgressBox.fillStyle( 0x222222, 0.8 ) ;
         lProgressBox.fillRect( 240, 270, 320, 50 ) ;
 
-        this.load.on('progress', function (pValue) 
+        this.load.on( 'progress', function ( pValue ) 
         {
             lProgressBar.clear() ;
             lProgressBar.fillStyle( 0xffffff, 1 ) ;
             lProgressBar.fillRect( 250, 280, 300 * pValue, 30 ) ;
             lPercentText.setText(parseInt(pValue * 100) + '%') ;
-        });                
-        this.load.on('fileprogress', function (pFile) 
+        } ) ;                
+        this.load.on( 'fileprogress', function ( pFile ) 
         {
             lAssetText.setText('Loading asset: ' + pFile.src.split('/')[ pFile.src.split('/').length - 5 ]) ;
-        });     
-        this.load.on('complete', function () 
+        } ) ;     
+        this.load.on( 'complete', function () 
         {
             lProgressBar.destroy() ;
             lProgressBox.destroy() ;
             lLoadingText.destroy() ;
             lPercentText.destroy();
             lAssetText.destroy();
-        });
+        } ) ;
 
-        this.GameManager.loadAssets('level1') ;
-        this.GameManager.loadAssets('playerSprites') ;
-        this.GameManager.loadAssets('mummySprites') ;
+        this.GameManager.loadAssets( 'level1' ) ;
+        this.GameManager.loadAssets( 'playerSprites' ) ;
+        this.GameManager.loadAssets( 'mummySprites' ) ;
     }
     create()
     {
@@ -94,22 +96,25 @@ class Level1 extends Phaser.Scene
         this.mPlayer.anims.play( 'knightIdle' , true ) ;
         this.mMummy.anims.play( 'mummyIdle', true ) ;
 
-        this.mKeyZ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Z ) ;
-        this.mKeyQ = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.Q ) ;
-        this.mKeyS = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.S ) ;
-        this.mKeyD = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.D ) ;
+        this.mKeyJump = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.SPACE ) ;
+        this.mKeyLeft = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.LEFT ) ;
+        this.mKeyDown = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.DOWN ) ;
+        this.mKeyRight = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.RIGHT ) ;
+        this.mKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
+
+        this.mPlayerSword = this.add.group() ;
 
         this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlayer ) ;
-
-        console.log(this);
     }
     update()
     {
-        if ( this.mKeyZ.isDown && this.mPlayer.body.touching.down ) { this.mPlayer.moveUp() ; }
-        else if ( this.mKeyQ.isDown ) { this.mPlayer.moveLeft() ; }
-        else if ( this.mKeyD.isDown ) { this.mPlayer.moveRight() ; }
+        if ( this.mKeyJump.isDown && this.mPlayer.body.touching.down ) { this.mPlayer.moveUp() ; }
+        else if ( this.mKeyE.isDown ) { this.mPlayer.attack() ; }
+        else if ( this.mKeyLeft.isDown ) { this.mPlayer.moveLeft() ; }
+        else if ( this.mKeyRight.isDown ) { this.mPlayer.moveRight() ; }
+        // else if ( Phaser.Input.Keyboard.JustDown( this.mKeyE ) ) { this.mPlayer.attack() ; }
         else { this.mPlayer.update() ; }
         this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
     }
