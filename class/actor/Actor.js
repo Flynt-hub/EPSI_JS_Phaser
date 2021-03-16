@@ -1,4 +1,4 @@
-class Actor extends Phaser.GameObjects.Sprite 
+class Actor extends Phaser.Physics.Arcade.Sprite
 {
     constructor( pPhaserContext, pX, pY, pKey, pFrame )
     {
@@ -6,8 +6,11 @@ class Actor extends Phaser.GameObjects.Sprite
         this.mPhaserContext = pPhaserContext ;
         this.mPhaserContext.add.existing(this) ;
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
+        this.setCollideWorldBounds(true);
+
         this.setData( "isAlive", true) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
+
     }
 }
