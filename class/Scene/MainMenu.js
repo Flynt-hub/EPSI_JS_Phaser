@@ -13,7 +13,7 @@ class MainMenu extends Phaser.Scene
     {
         this.add.image( 400, 170, 'mainMenuBackground' ) ;  
         this.start = this.add.sprite( this.game.config.width * 0.5,
-                                      this.game.config.height * 0.85,
+                                      this.game.config.height * 0.50,
                                       'startButton' ) ;  
                                       
         this.start.setInteractive() ;
@@ -25,6 +25,6 @@ class MainMenu extends Phaser.Scene
         this.start.on( 'pointerup', () => {
             this.start.setTexture('startButton') ;
             this.scene.start('Level1') ;
-          }, this) ;
+          }) ;
     }
 }
