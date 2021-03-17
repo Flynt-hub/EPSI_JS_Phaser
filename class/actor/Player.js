@@ -9,8 +9,7 @@ class Player extends Actor
         this.setData( 'hit', false ) ;
         this.displayWidth  = 100 ;
         this.displayHeight = 100 ;
-         this.setBounce(0.2) ;
-
+        this.setBounce(0.2) ;
         this.body.setGravityY(300) ;
         this.body.setSize( 340, 550 ) ;
         this.mIsHitting = false ;
@@ -34,23 +33,30 @@ class Player extends Actor
     }
     attack()
     {
-        let lSword = null ;
-        const lIsFacingRight = this.flipX ;
-        if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 20, this.y ) ; }
-        else { lSword = new Sword( this.mPhaserContext, this.x + 20, this.y ) ; }
-        this.mPhaserContext.mPlayerSword.add( lSword ) ;
-        console.log(this.mPhaserContext.mPlayerSword) ;
-        this.mPhaserContext.time.delayedCall( 200, () => {
-            // lSword.setActive(false);
-            // lSword.setVisible(false) ;
-            this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ;
-        } ) ;
-        this.anims.play( 'knightSlashing' , true ) ;
+        if ( this.mIsHitting === false )
+        {
+            this.mIsHitting = true ;
+            
+            let lSword = null ;
+            const lIsFacingRight = this.flipX ;
+            if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
+            else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
+            this.mPhaserContext.mPlayerSword.add( lSword ) ;
+            this.mPhaserContext.time.delayedCall( 200, () => {                       
+                if(this.mPhaserContext.mPlayerSword.children.entries.length > 0) { this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ; }                
+            } ) ;
+            this.anims.play( 'knightSlashing' , true ) ;
+            
+        }
     }
     update()
     {
-        this.body.velocity.x = 0 ;
-        this.anims.play( 'knightIdle' , true ) ;
+        if( this.anims.getProgress() === 1 ) { this.mIsHitting = false ; }
+        if( !this.mIsHitting )
+        {
+            this.body.velocity.x = 0 ;            
+            this.anims.play( 'knightIdle' , true ) ;
+        }
     }
     ondestroy()
     {

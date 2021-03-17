@@ -107,15 +107,22 @@ class Level1 extends Phaser.Scene
         this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlayer ) ;
+        this.physics.add.collider( this.mPlayerSword, this.mMummy, ( lSword, lMummy ) => 
+        {
+            lSword.hit( this.mMummy ) ;
+            lSword.destroy() ;
+            lMummy.destroy() ;
+            console.log('hit');
+        } ) ;
     }
     update()
     {
         if ( this.mKeyJump.isDown && this.mPlayer.body.touching.down ) { this.mPlayer.moveUp() ; }
-        else if ( this.mKeyE.isDown ) { this.mPlayer.attack() ; }
+        else if ( Phaser.Input.Keyboard.JustDown(this.mKeyE) ) { this.mPlayer.attack() ; }
         else if ( this.mKeyLeft.isDown ) { this.mPlayer.moveLeft() ; }
         else if ( this.mKeyRight.isDown ) { this.mPlayer.moveRight() ; }
-        // else if ( Phaser.Input.Keyboard.JustDown( this.mKeyE ) ) { this.mPlayer.attack() ; }
         else { this.mPlayer.update() ; }
+       
         this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
     }
 
