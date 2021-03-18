@@ -77,7 +77,7 @@ class GameManager
                 this.setAnimationSequences( 'Jump Loop', 6, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Jump Start', 6, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Kicking', 12, 1, 'mummy' ) ;
-                this.setAnimationSequences( 'Run Slashing', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Run Slashing', 12, 0, 'mummy' ) ;
                 this.setAnimationSequences( 'Run Throwing', 12, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Running', 12, -1, 'mummy' ) ;
                 this.setAnimationSequences( 'Slashing', 12, 1, 'mummy' ) ;

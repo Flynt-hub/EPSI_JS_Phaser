@@ -11,51 +11,38 @@ class Player extends Actor
         this.displayHeight = 100 ;
         this.setBounce(0.2) ;
         this.body.setGravityY(300) ;
-        this.body.setSize( 340, 550 ) ;
-        this.mIsHitting = false ;
-    }
-    moveRight() 
-    {
-        this.body.velocity.x = this.getData( "moveVelocity" ) ;
-        this.flipX           = false ;
-        this.anims.play( 'knightRunning', true ) ;
-    }
-    moveLeft() 
-    {
-        this.body.velocity.x = -this.getData( "moveVelocity" ) ;
-        this.flipX           = true ;
-        this.anims.play( 'knightRunning', true ) ;
-    }
-    moveUp()
-    {
-        this.body.velocity.y = this.getData( "jumpVelocity" ) ;
-        this.anims.play( 'knightJump Loop' , true ) ;
+        this.body.setSize( 340, 550 ) ;        
     }
     attack()
     {
         if ( this.mIsHitting === false )
         {
-            this.mIsHitting = true ;
-            
-            let lSword = null ;
+            this.mIsHitting      = true ;
+            let lSword           = null ;
             const lIsFacingRight = this.flipX ;
-            if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
-            else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
-            this.mPhaserContext.mPlayerSword.add( lSword ) ;
-            this.mPhaserContext.time.delayedCall( 200, () => {                       
+            
+            this.once( 'animationcomplete', () => {
+                this.mIsHitting = false ;
+            }, this ) ;
+            this.anims.play( 'knightSlashing' , true ) ;
+            this.mPhaserContext.time.delayedCall( 150, () => {                       
+                if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
+                else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
+                this.mPhaserContext.mPlayerSword.add( lSword ) ;
+            } ) ;
+            this.mPhaserContext.time.delayedCall( 300, () => {                       
                 if(this.mPhaserContext.mPlayerSword.children.entries.length > 0) { this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ; }                
             } ) ;
-            this.anims.play( 'knightSlashing' , true ) ;
             
         }
     }
     update()
     {
-        if( this.anims.getProgress() === 1 ) { this.mIsHitting = false ; }
-        if( !this.mIsHitting )
+        // if( this.anims.getProgress() === 1 ) { this.mIsHitting = false ; }
+        if( this.body.touching.down )
         {
-            this.body.velocity.x = 0 ;            
-            this.anims.play( 'knightIdle' , true ) ;
+            this.body.velocity.x = 0 ;
+            if ( !this.mIsHitting ) { this.anims.play( 'knightIdle' , true ) ; }
         }
     }
     onDestroy()
