@@ -90,8 +90,10 @@ class Level1 extends Phaser.Scene
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;        
         this.setPlatform() ;
 
-        this.mPlayer = this.GameManager.getPlayer() ;        
-        this.mMummy  = this.GameManager.getMummy()  ;        
+        this.mPlayerSword = this.add.group() ;
+        
+        this.mPlayer = this.GameManager.createPlayer() ;        
+        this.mMummy  = this.GameManager.createMummy() ;        
 
         this.mPlayer.anims.play( 'knightIdle' , true ) ;
         this.mMummy.anims.play( 'mummyIdle', true ) ;
@@ -102,7 +104,7 @@ class Level1 extends Phaser.Scene
         this.mKeyRight = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.RIGHT ) ;
         this.mKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
 
-        this.mPlayerSword = this.add.group() ;
+console.log(this.mMummy.getData('isAlive')) ;
 
         this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
         this.physics.add.collider( this.mMummy, this.mPlatform ) ;
@@ -111,7 +113,6 @@ class Level1 extends Phaser.Scene
         {
             lSword.hit( this.mMummy ) ;
             lSword.destroy() ;
-            lMummy.destroy() ;
             console.log('hit');
         } ) ;
     }
@@ -122,8 +123,8 @@ class Level1 extends Phaser.Scene
         else if ( this.mKeyLeft.isDown ) { this.mPlayer.moveLeft() ; }
         else if ( this.mKeyRight.isDown ) { this.mPlayer.moveRight() ; }
         else { this.mPlayer.update() ; }
-       
-        this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
+        if(this.mMummy.getData( "isAlive" ))
+            this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
     }
 
     setPlatform()
@@ -131,25 +132,25 @@ class Level1 extends Phaser.Scene
         this.mPlatform = this.physics.add.staticGroup() ;
         for (let i = 0; i < 13 ; ++i) 
         {
-            let lOffsetX = (32 + 64 * i) ;
+            let lOffsetX = ( 32 + 64 * i ) ;
             this.mPlatform.create( lOffsetX, 568, ('Volcano Ground 02') ).setScale(0.5).refreshBody() ;        
         }
         this.mPlatform.create( 400 , 400, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
         for (let i = 0; i < 12 ; ++i) 
         {
-            let lOffsetX = (432 + 32 * i) ;
+            let lOffsetX = ( 432 + 32 * i ) ;
             this.mPlatform.create( lOffsetX , 400, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
         }
         this.mPlatform.create( 273 , 250, ('Volcano Ground 12') ).setScale(0.25).refreshBody() ;
         for (let i = 0; i < 8 ; ++i) 
         {
-            let lOffsetX = (16 + 32 * i) ;
+            let lOffsetX = ( 16 + 32 * i ) ;
             this.mPlatform.create( lOffsetX , 250, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
         }
         this.mPlatform.create( 558 , 220, ('Volcano Ground 10') ).setScale(0.25).refreshBody() ;
         for (let i = 0; i < 7 ; ++i) 
         {
-            let lOffsetX = (590 + 32 * i) ;
+            let lOffsetX = ( 590 + 32 * i ) ;
             this.mPlatform.create( lOffsetX , 220, ('Volcano Ground 11') ).setScale(0.25).refreshBody() ;        
         }
     }    

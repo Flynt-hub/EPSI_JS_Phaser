@@ -58,7 +58,7 @@ class Player extends Actor
             this.anims.play( 'knightIdle' , true ) ;
         }
     }
-    ondestroy()
+    onDestroy()
     {
         this.scene.time.addEvent( {
           delay: 50,

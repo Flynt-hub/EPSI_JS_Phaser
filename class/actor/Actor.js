@@ -8,17 +8,21 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.setCollideWorldBounds(true);
 
-        this.setData( "isAlive", true) ;
+        this.setData( "isAlive", true ) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
-
     }
     takeDamage( pDamageAmount )
     {
         this.setData( 'healthPoint', this.getData( 'healthPoint' ) - pDamageAmount ) ;
-        if ( this.getData( 'healthPoint' ) <= 0 ) {
-            console.log(this) ;
-        }
+        if ( this.getData( 'healthPoint' ) <= 0 ) { this.die() ; }
+    }
+    die()
+    {
+        this.setData( 'isAlive', false ) ;
+        console.log( this.getData('isAlive') ) ;
+        this.anims.play( this.getData('name') + 'Dying', true ) ;
+        this.on( 'animationcomplete', () => { this.disableBody( true, false ) ; }, this ) ;
     }
 }
 
@@ -28,7 +32,7 @@ class Sword extends Phaser.GameObjects.Sprite
     {
         super( pPhaserContext, pX, pY, '', '' ) ;
         this.mPhaserContext = pPhaserContext ;
-        this.setData( 'damages', 100) ;
+        this.setData( 'damages', 100 ) ;
         this.mPhaserContext.add.existing( this ) ;
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.body.setSize( 5, 5 ) ;

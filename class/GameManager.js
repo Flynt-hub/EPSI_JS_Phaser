@@ -6,8 +6,6 @@ class GameManager
         this.mActorManager = new ActorManager( pPhaserContext ) ;
         this.mIsPlayerCreated = false ;
         this.mIsMummyCreated = false ;
-        this.mPlayer = null ;
-        this.mMummy = null ;
         this.mPhaserContext = pPhaserContext ;        
     }
     loadAssets( pSprites )
@@ -30,25 +28,25 @@ class GameManager
                 break;
         }
     }
-    getPlayer()
+    createPlayer()
     {
         if ( !this.mIsPlayerCreated )
         {
-            this.createAnimationsSequences('player') ;
-            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ; 
             this.mIsPlayerCreated = true ;
+            this.createAnimationsSequences('player') ;
+            return new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ;
         }
-        return this.mPlayer ;
+        return false ;
     }
-    getMummy()
+    createMummy()
     {
         if ( !this.mIsMummyCreated )
         {
             this.createAnimationsSequences('mummy') ;
-            this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
             this.mIsMummyCreated = true ;
+            return new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
         }
-        return this.mMummy ;
+        return false ;
     }
     createAnimationsSequences( pActor )
     {
@@ -73,7 +71,7 @@ class GameManager
                 break;
             case 'mummy':
                 this.setAnimationSequences( 'Idle', 18, -1, 'mummy' ) ;
-                this.setAnimationSequences( 'Dying', 15, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Dying', 15, 0, 'mummy' ) ;
                 this.setAnimationSequences( 'Falling Down', 6, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Hurt', 12, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Jump Loop', 6, 1, 'mummy' ) ;
