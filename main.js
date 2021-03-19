@@ -28,6 +28,10 @@ var config = {
         Level1,
         //SceneEnd
     ],
+    audio: 
+    {
+        disableWebAudio: true
+    }
 };
 
 let game = new Phaser.Game(config) ;

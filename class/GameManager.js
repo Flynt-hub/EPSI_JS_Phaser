@@ -24,6 +24,8 @@ class GameManager
             case 'mummySprites':
                 this.mAssetsLoader.loadMummyAssets() ;                
                 break ;
+            case 'mainMenuTheme':
+                this.mAssetsLoader.loadMainMenuTheme() ;
             default:
                 break;
         }
@@ -73,7 +75,7 @@ class GameManager
                 this.setAnimationSequences( 'Idle', 18, -1, 'mummy' ) ;
                 this.setAnimationSequences( 'Dying', 15, 0, 'mummy' ) ;
                 this.setAnimationSequences( 'Falling Down', 6, 1, 'mummy' ) ;
-                this.setAnimationSequences( 'Hurt', 12, 1, 'mummy' ) ;
+                this.setAnimationSequences( 'Hurt', 12, 0, 'mummy' ) ;
                 this.setAnimationSequences( 'Jump Loop', 6, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Jump Start', 6, 1, 'mummy' ) ;
                 this.setAnimationSequences( 'Kicking', 12, 1, 'mummy' ) ;

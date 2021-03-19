@@ -111,4 +111,9 @@ class AssetsLoader
             }
         }
     }
+    loadMainMenuTheme()
+    {
+        this.mPhaserContext.load.audio('mainMenuTheme', './assets/music/BRPG_Assault_Adventure_Stinger.wav') ;
+        this.mPhaserContext.load.audio('startNotification', './assets/music/LQ_Positive_Notification.wav') ;
+    }
 }

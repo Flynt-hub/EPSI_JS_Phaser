@@ -113,8 +113,10 @@ console.log(this.mMummy.getData('isAlive')) ;
         {
             lSword.hit( this.mMummy ) ;
             lSword.destroy() ;
-            console.log('hit');
         } ) ;
+
+        // let MainMenuTheme = this.sound.add('mainMenuTheme');
+        // MainMenuTheme.play() ; 
     }
     update()
     {
@@ -123,7 +125,7 @@ console.log(this.mMummy.getData('isAlive')) ;
         else if ( this.mKeyLeft.isDown ) { this.mPlayer.moveLeft() ; }
         else if ( this.mKeyRight.isDown ) { this.mPlayer.moveRight() ; }
         else { this.mPlayer.update() ; }
-        if(this.mMummy.getData( "isAlive" ))
+        if( this.mMummy.getData( "isAlive" ) )
             this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
     }
 
