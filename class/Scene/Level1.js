@@ -83,9 +83,19 @@ class Level1 extends Phaser.Scene
         this.GameManager.loadAssets( 'level1' ) ;
         this.GameManager.loadAssets( 'playerSprites' ) ;
         this.GameManager.loadAssets( 'mummySprites' ) ;
+        this.GameManager.loadAssets( 'level1Audios' ) ;
     }
     create()
     {
+        this.sound.add( 'level1Theme', { loop: true, volume: 0.1 } ) ;
+        this.sound.add( 'swordHit1', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordWhoosh1', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordHit2', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordWhoosh2', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordHit3', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordWhoosh3', { loop: false, volume: 0.1 } ) ;
+        this.sound.add( 'swordHit4', { loop: false, volume: 0.1 } ) ;
+        
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground00' ) ;
         this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'volcanoBackground01' ) ;        
         this.setPlatform() ;
@@ -115,8 +125,7 @@ console.log(this.mMummy.getData('isAlive')) ;
             lSword.destroy() ;
         } ) ;
 
-        // let MainMenuTheme = this.sound.add('mainMenuTheme');
-        // MainMenuTheme.play() ; 
+        this.sound.sounds[2].play() ;
     }
     update()
     {

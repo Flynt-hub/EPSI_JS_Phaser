@@ -4,7 +4,6 @@ class MainMenu extends Phaser.Scene
     {
         super( { key: "MainMenu", active: true } ) ;
         this.GameManager = new GameManager( this ) ;
-        this.mMainMenuTheme = null ;
     }
     preload()
     {
@@ -15,6 +14,7 @@ class MainMenu extends Phaser.Scene
     {
         let MainMenuTheme = this.sound.add( 'mainMenuTheme', { loop: true, volume: 0.5} ) ;
         let startNotification = this.sound.add( 'startNotification', { loop: false, volume: 0.5} ) ;
+
         this.add.image( 400, 170, 'mainMenuBackground' ) ;  
         this.start = this.add.sprite( this.game.config.width * 0.5,
                                       this.game.config.height * 0.50,

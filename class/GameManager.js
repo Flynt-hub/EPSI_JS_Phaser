@@ -26,6 +26,8 @@ class GameManager
                 break ;
             case 'mainMenuTheme':
                 this.mAssetsLoader.loadMainMenuTheme() ;
+            case 'level1Audios':
+                this.mAssetsLoader.loadLevel1Audios() ;
             default:
                 break;
         }
