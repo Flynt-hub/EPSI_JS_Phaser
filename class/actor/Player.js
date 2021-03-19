@@ -24,7 +24,8 @@ class Player extends Actor
             this.once( 'animationcomplete', () => {
                 this.mIsHitting = false ;
             }, this ) ;
-            this.anims.play( 'knightSlashing' , true ) ;
+            if ( this.body.touching.down ) { this.anims.play( 'knightSlashing' , true ) ; }
+            else { this.anims.play( this.getData( 'name' ) + 'Slashing in The Air' , true ) ; }
             this.mPhaserContext.time.delayedCall( 150, () => {                       
                 if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
                 else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
@@ -38,7 +39,6 @@ class Player extends Actor
     }
     update()
     {
-        // if( this.anims.getProgress() === 1 ) { this.mIsHitting = false ; }
         if( this.body.touching.down )
         {
             this.body.velocity.x = 0 ;

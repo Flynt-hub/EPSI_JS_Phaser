@@ -9,6 +9,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         this.setCollideWorldBounds(true);
 
         this.mIsHitting = false ;
+        this.mIsSuffering = false ;
         this.setData( "isAlive", true ) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
@@ -17,7 +18,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
     {
         this.body.velocity.x = -this.getData( "moveVelocity" ) ;
         this.flipX           = true ;
-        if ( this.body.touching.down ) 
+        if ( this.body.touching.down && !this.mIsSuffering ) 
         {
             if ( this.mIsHitting ){ this.anims.play( this.getData('name') + 'Run Slashing' , true ) ; }
             else { this.anims.play( this.getData('name') + 'Running', true ) ; }
@@ -27,7 +28,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
     {
         this.body.velocity.x = this.getData( "moveVelocity" ) ;
         this.flipX           = false ;        
-        if ( this.body.touching.down ) 
+        if ( this.body.touching.down && !this.mIsSuffering ) 
         {
             if ( this.mIsHitting ){ this.anims.play( this.getData('name') + 'Run Slashing' , true ) ; }
             else { this.anims.play( this.getData('name') + 'Running', true ) ; }
@@ -44,6 +45,13 @@ class Actor extends Phaser.Physics.Arcade.Sprite
     }
     takeDamage( pDamageAmount )
     {
+        this.mIsSuffering = true ;
+
+        this.once( 'animationcomplete', () => {
+            this.mIsSuffering = false ;
+        }, this ) ;
+        this.anims.play( this.getData('name') + 'Hurt' , true ) ;
+
         this.setData( 'healthPoint', this.getData( 'healthPoint' ) - pDamageAmount ) ;
         if ( this.getData( 'healthPoint' ) <= 0 ) { this.die() ; }
     }
@@ -62,11 +70,11 @@ class Sword extends Phaser.GameObjects.Sprite
     {
         super( pPhaserContext, pX, pY, '', '' ) ;
         this.mPhaserContext = pPhaserContext ;
-        this.setData( 'damages', 100 ) ;
+        this.setData( 'damages', 50 ) ;
         this.mPhaserContext.add.existing( this ) ;
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.body.setSize( 25, 40 ) ;
-        this.setVisible(false) ;
+        this.setVisible( false ) ;
         this.body.setAllowGravity( false ) ;
     }
     hit( pTarget )
