@@ -13,6 +13,8 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         this.setData( "isAlive", true ) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
+
+        this.mWhooshCounter = 3 ;
     }
     moveLeft() 
     {
@@ -42,6 +44,33 @@ class Actor extends Phaser.Physics.Arcade.Sprite
             console.log(e.getLastFrame()) ;
         }, this ) ;
         this.anims.play( this.getData('name') + 'Jump Start' , true ) ;
+    }
+    attack()
+    {
+        if ( this.mIsHitting === false )
+        {
+            this.mPhaserContext.sound.sounds[ this.mWhooshCounter ].play() ;
+            ++this.mWhooshCounter ;
+            this.mWhooshCounter = this.mWhooshCounter > 9 ? 3 : this.mWhooshCounter ;
+            this.mIsHitting      = true ;
+            let lSword           = null ;
+            const lIsFacingRight = this.flipX ;
+            
+            this.once( 'animationcomplete', () => {
+                this.mIsHitting = false ;
+            }, this ) ;
+            if ( this.body.touching.down ) { this.anims.play( this.getData( 'name' ) + 'Slashing' , true ) ; }
+            else { this.anims.play( this.getData( 'name' ) + 'Slashing in The Air' , true ) ; }
+            this.mPhaserContext.time.delayedCall( 150, () => {                       
+                if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
+                else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
+                this.mPhaserContext.mPlayerSword.add( lSword ) ;
+            } ) ;
+            this.mPhaserContext.time.delayedCall( 300, () => {                       
+                if(this.mPhaserContext.mPlayerSword.children.entries.length > 0) { this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ; }                
+            } ) ;
+            
+        }
     }
     takeDamage( pDamageAmount )
     {
