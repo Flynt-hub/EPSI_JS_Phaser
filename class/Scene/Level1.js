@@ -102,11 +102,11 @@ class Level1 extends Phaser.Scene
 
         this.mPlayerSword = this.add.group() ;
         
-        this.mPlayer = this.GameManager.createPlayer() ;        
-        this.mMummy  = this.GameManager.createMummy() ;        
+        // this.mPlayer = this.GameManager.getPlayer() ;        
+        // this.mMummy  = this.GameManager.getMummy() ;        
 
-        this.mPlayer.anims.play( 'knightIdle' , true ) ;
-        this.mMummy.anims.play( 'mummyIdle', true ) ;
+        this.GameManager.getPlayer().anims.play( 'knightIdle' , true ) ;
+        this.GameManager.getMummy().anims.play( 'mummyIdle', true ) ;
 
         this.mKeyJump = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.SPACE ) ;
         this.mKeyLeft = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.LEFT ) ;
@@ -114,14 +114,14 @@ class Level1 extends Phaser.Scene
         this.mKeyRight = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.RIGHT ) ;
         this.mKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
 
-console.log(this.mMummy.getData('isAlive')) ;
+console.log(this.GameManager.getMummy().getData('isAlive')) ;
 
-        this.physics.add.collider( this.mPlayer, this.mPlatform ) ;
-        this.physics.add.collider( this.mMummy, this.mPlatform ) ;
-        this.physics.add.collider( this.mMummy, this.mPlayer ) ;
-        this.physics.add.collider( this.mPlayerSword, this.mMummy, ( lSword, lMummy ) => 
+        this.physics.add.collider( this.GameManager.getPlayer(), this.mPlatform ) ;
+        this.physics.add.collider( this.GameManager.getMummy(), this.mPlatform ) ;
+        this.physics.add.collider( this.GameManager.getMummy(), this.GameManager.getPlayer() ) ;
+        this.physics.add.collider( this.mPlayerSword, this.GameManager.getMummy(), ( lSword, lMummy ) => 
         {
-            lSword.hit( this.mMummy ) ;
+            lSword.hit( this.GameManager.getMummy() ) ;
             lSword.destroy() ;
         } ) ;
 
@@ -129,13 +129,13 @@ console.log(this.mMummy.getData('isAlive')) ;
     }
     update()
     {
-        if ( this.mKeyJump.isDown && this.mPlayer.body.touching.down ) { this.mPlayer.moveUp() ; }
-        else if ( Phaser.Input.Keyboard.JustDown(this.mKeyE) ) { this.mPlayer.attack() ; }
-        else if ( this.mKeyLeft.isDown ) { this.mPlayer.moveLeft() ; }
-        else if ( this.mKeyRight.isDown ) { this.mPlayer.moveRight() ; }
-        else { this.mPlayer.update() ; }
-        if( this.mMummy.getData( "isAlive" ) )
-            this.mMummy.AI( this.mPlayer, this.mImportantAiMapPoints ) ;
+        if ( this.mKeyJump.isDown && this.GameManager.getPlayer().body.touching.down ) { this.GameManager.getPlayer().moveUp() ; }
+        else if ( Phaser.Input.Keyboard.JustDown(this.mKeyE) ) { this.GameManager.getPlayer().attack() ; }
+        else if ( this.mKeyLeft.isDown ) { this.GameManager.getPlayer().moveLeft() ; }
+        else if ( this.mKeyRight.isDown ) { this.GameManager.getPlayer().moveRight() ; }
+        else { this.GameManager.getPlayer().update() ; }
+        if( this.GameManager.getMummy().getData( "isAlive" ) )
+            this.GameManager.getMummy().AI( this.GameManager.getPlayer(), this.mImportantAiMapPoints ) ;
     }
 
     setPlatform()

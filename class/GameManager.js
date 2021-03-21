@@ -2,11 +2,13 @@ class GameManager
 {
     constructor( pPhaserContext )
     {
-        this.mAssetsLoader = new AssetsLoader( pPhaserContext ) ;
-        this.mActorManager = new ActorManager( pPhaserContext ) ;
+        this.mAssetsLoader    = new AssetsLoader( pPhaserContext ) ;
+        this.mActorManager    = new ActorManager( pPhaserContext ) ;
         this.mIsPlayerCreated = false ;
-        this.mIsMummyCreated = false ;
-        this.mPhaserContext = pPhaserContext ;        
+        this.mIsMummyCreated  = false ;
+        this.mPhaserContext   = pPhaserContext ;   
+        this.mPlayer          = null ;
+        this.mMummy           = null ;     
     }
     loadAssets( pSprites )
     {
@@ -32,25 +34,27 @@ class GameManager
                 break;
         }
     }
-    createPlayer()
+    getPlayer()
     {
         if ( !this.mIsPlayerCreated )
         {
             this.mIsPlayerCreated = true ;
             this.createAnimationsSequences('player') ;
-            return new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ;
+            this.mPlayer = new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ;
+            // return new Player(this.mPhaserContext, 50, 400, 'knightIdle000' ) ;
         }
-        return false ;
+        return this.mPlayer ;
     }
-    createMummy()
+    getMummy()
     {
         if ( !this.mIsMummyCreated )
         {
             this.createAnimationsSequences('mummy') ;
             this.mIsMummyCreated = true ;
-            return new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
+            this.mMummy = new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
+            // return new Enemy(this.mPhaserContext, 700, 200, 'mummyIdle000', '', 'mummy' ) ;
         }
-        return false ;
+        return this.mMummy ;
     }
     createAnimationsSequences( pActor )
     {
