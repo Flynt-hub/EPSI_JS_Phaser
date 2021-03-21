@@ -16,8 +16,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
 
         this.mWhooshCounter = 3 ; // used to get sword attack sounds
 
-        this.mHealthBar = new HudManager( pPhaserContext ) ;
-        this.mHealthBar.showHealthBar( this.x, this.y ) ;
+        this.mHealthBar = new HealthBar(pPhaserContext, this.x, this.y ) ;
     }
     moveLeft() 
     {
@@ -58,6 +57,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
             this.mIsHitting      = true ;
             let lSword           = null ;
             const lIsFacingRight = this.flipX ;
+            const lIsPlayer      = this.getData( 'name' ) === 'knight' ;
             
             this.once( 'animationcomplete', () => {
                 this.mIsHitting = false ;
@@ -67,10 +67,18 @@ class Actor extends Phaser.Physics.Arcade.Sprite
             this.mPhaserContext.time.delayedCall( 150, () => {                       
                 if ( lIsFacingRight ) { lSword = new Sword( this.mPhaserContext, this.x - 30, this.y ) ; }
                 else { lSword = new Sword( this.mPhaserContext, this.x + 30, this.y ) ; }
-                this.mPhaserContext.mPlayerSword.add( lSword ) ;
+                if ( lIsPlayer ) { this.mPhaserContext.mPlayerSword.add( lSword ) ; }
+                else { this.mPhaserContext.mMummySword.add( lSword ) ; } 
             } ) ;
-            this.mPhaserContext.time.delayedCall( 300, () => {                       
-                if(this.mPhaserContext.mPlayerSword.children.entries.length > 0) { this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ; }                
+            this.mPhaserContext.time.delayedCall( 300, () => { 
+                if ( lIsPlayer )
+                {
+                    if ( this.mPhaserContext.mPlayerSword.children.entries.length > 0 ) { this.mPhaserContext.mPlayerSword.children.entries[0].destroy() ; }                
+                }
+                else
+                {
+                    if ( this.mPhaserContext.mMummySword.children.entries.length > 0 ) { this.mPhaserContext.mMummySword.children.entries[0].destroy() ; }                
+                }                      
             } ) ;
             
         }
@@ -85,6 +93,7 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         this.anims.play( this.getData('name') + 'Hurt' , true ) ;
 
         this.setData( 'healthPoint', this.getData( 'healthPoint' ) - pDamageAmount ) ;
+        this.mHealthBar.decrease( pDamageAmount ) ;
         if ( this.getData( 'healthPoint' ) <= 0 ) { this.die() ; }
     }
     die()
@@ -102,6 +111,10 @@ class Actor extends Phaser.Physics.Arcade.Sprite
             if ( !this.mIsHitting ) { this.anims.play( this.getData( 'name' ) + 'Idle' , true ) ; }
         }
     }
+    updateHealthBar(deltax = 0)
+    {
+        this.mHealthBar.update( this.x - deltax, this.y ) ;
+    }
 }
 
 class Sword extends Phaser.GameObjects.Sprite
@@ -110,7 +123,7 @@ class Sword extends Phaser.GameObjects.Sprite
     {
         super( pPhaserContext, pX, pY, '', '' ) ;
         this.mPhaserContext = pPhaserContext ;
-        this.setData( 'damages', 50 ) ;
+        this.setData( 'damages', 20 ) ;
         this.mPhaserContext.add.existing( this ) ;
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.body.setSize( 25, 40 ) ;

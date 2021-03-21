@@ -6,8 +6,6 @@ class Level1 extends Phaser.Scene
 
         this.GameManager  = new GameManager( this ) ;
         this.mPlatform    = null ;
-        this.mPlayer      = null ;
-        this.mMummy       = null ;
         this.mKeyJump     = null ;
         this.mKeyLeft     = null ;
         this.mKeyDown     = null ;
@@ -101,18 +99,16 @@ class Level1 extends Phaser.Scene
         this.setPlatform() ;
 
         this.mPlayerSword = this.add.group() ;
-        
-        // this.mPlayer = this.GameManager.getPlayer() ;        
-        // this.mMummy  = this.GameManager.getMummy() ;        
+        this.mMummySword  = this.add.group() ;       
 
         this.GameManager.getPlayer().anims.play( 'knightIdle' , true ) ;
         this.GameManager.getMummy().anims.play( 'mummyIdle', true ) ;
 
-        this.mKeyJump = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.SPACE ) ;
-        this.mKeyLeft = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.LEFT ) ;
-        this.mKeyDown = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.DOWN ) ;
+        this.mKeyJump  = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.SPACE ) ;
+        this.mKeyLeft  = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.LEFT ) ;
+        this.mKeyDown  = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.DOWN ) ;
         this.mKeyRight = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.RIGHT ) ;
-        this.mKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
+        this.mKeyE     = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
 
         
         this.physics.add.collider( this.GameManager.getPlayer(), this.mPlatform ) ;
@@ -123,13 +119,14 @@ class Level1 extends Phaser.Scene
             lSword.hit( this.GameManager.getMummy() ) ;
             lSword.destroy() ;
         } ) ;
+        this.physics.add.collider( this.mMummySword, this.GameManager.getPlayer(), ( lSword, lPlayer ) => 
+        {
+            lSword.hit( this.GameManager.getPlayer() ) ;
+            lSword.destroy() ;
+        } ) ;
         
         this.sound.sounds[2].play() ;
         
-        // let carotte = this.add.graphics() ;
-        // carotte.fillStyle( 0x222222, 0.8 ) ;
-        // carotte.fillRect( 240, 270, 320, 50 ) ;
-        console.log(this) ;
     }
     update()
     {
@@ -137,9 +134,10 @@ class Level1 extends Phaser.Scene
         else if ( Phaser.Input.Keyboard.JustDown(this.mKeyE) ) { this.GameManager.getPlayer().attack() ; }
         else if ( this.mKeyLeft.isDown ) { this.GameManager.getPlayer().moveLeft() ; }
         else if ( this.mKeyRight.isDown ) { this.GameManager.getPlayer().moveRight() ; }
-        else { this.GameManager.getPlayer().update() ; }
-        if( this.GameManager.getMummy().getData( "isAlive" ) )
-            this.GameManager.getMummy().AI( this.GameManager.getPlayer(), this.mImportantAiMapPoints ) ;
+        else if ( !this.GameManager.getPlayer().mIsSuffering ) { this.GameManager.getPlayer().update() ; }
+        if( this.GameManager.getMummy().getData( "isAlive" ) ) { this.GameManager.getMummy().AI( this.GameManager.getPlayer(), this.mImportantAiMapPoints ) ; }
+        this.GameManager.getPlayer().updateHealthBar() ;
+        this.GameManager.getMummy().updateHealthBar() ;
     }
 
     setPlatform()
