@@ -13,14 +13,6 @@ class Player extends Actor
         this.body.setGravityY(300) ;
         this.body.setSize( 340, 550 ) ;        
     }
-    update()
-    {
-        if( this.body.touching.down )
-        {
-            this.body.velocity.x = 0 ;
-            if ( !this.mIsHitting ) { this.anims.play( 'knightIdle' , true ) ; }
-        }
-    }
     onDestroy()
     {
         this.scene.time.addEvent( {

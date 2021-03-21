@@ -4,15 +4,15 @@ class Level1 extends Phaser.Scene
     {
         super( { key: "Level1" } ) ;
 
-        this.GameManager = new GameManager( this ) ;
-        this.mPlatform   = null ;
-        this.mPlayer     = null ;
-        this.mMummy      = null ;
-        this.mKeyJump       = null ;
-        this.mKeyLeft       = null ;
-        this.mKeyDown       = null ;
-        this.mKeyRight       = null ;
-        this.mKeyE       = null ;
+        this.GameManager  = new GameManager( this ) ;
+        this.mPlatform    = null ;
+        this.mPlayer      = null ;
+        this.mMummy       = null ;
+        this.mKeyJump     = null ;
+        this.mKeyLeft     = null ;
+        this.mKeyDown     = null ;
+        this.mKeyRight    = null ;
+        this.mKeyE        = null ;
         this.mPlayerSword = null ;
         this.mImportantAiMapPoints = {
             groundToPlatform1: { xMin: 207, xMax: 255, y: 474 },
@@ -24,7 +24,7 @@ class Level1 extends Phaser.Scene
     {
         let lProgressBar = this.add.graphics() ;
         let lProgressBox = this.add.graphics() ;
-        var lWidth       = this.cameras.main.width ;
+        let lWidth       = this.cameras.main.width ;
         let lHeight      = this.cameras.main.height ;
         let lLoadingText = this.make.text({
             x: lWidth / 2,
@@ -65,7 +65,7 @@ class Level1 extends Phaser.Scene
             lProgressBar.clear() ;
             lProgressBar.fillStyle( 0xffffff, 1 ) ;
             lProgressBar.fillRect( 250, 280, 300 * pValue, 30 ) ;
-            lPercentText.setText(parseInt(pValue * 100) + '%') ;
+            lPercentText.setText( parseInt( pValue * 100 ) + '%' ) ;
         } ) ;                
         this.load.on( 'fileprogress', function ( pFile ) 
         {
@@ -114,8 +114,7 @@ class Level1 extends Phaser.Scene
         this.mKeyRight = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.RIGHT ) ;
         this.mKeyE = this.input.keyboard.addKey( Phaser.Input.Keyboard.KeyCodes.E ) ;
 
-console.log(this.GameManager.getMummy().getData('isAlive')) ;
-
+        
         this.physics.add.collider( this.GameManager.getPlayer(), this.mPlatform ) ;
         this.physics.add.collider( this.GameManager.getMummy(), this.mPlatform ) ;
         this.physics.add.collider( this.GameManager.getMummy(), this.GameManager.getPlayer() ) ;
@@ -124,8 +123,13 @@ console.log(this.GameManager.getMummy().getData('isAlive')) ;
             lSword.hit( this.GameManager.getMummy() ) ;
             lSword.destroy() ;
         } ) ;
-
+        
         this.sound.sounds[2].play() ;
+        
+        // let carotte = this.add.graphics() ;
+        // carotte.fillStyle( 0x222222, 0.8 ) ;
+        // carotte.fillRect( 240, 270, 320, 50 ) ;
+        console.log(this) ;
     }
     update()
     {

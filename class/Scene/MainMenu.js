@@ -30,6 +30,7 @@ class MainMenu extends Phaser.Scene
             this.start.setTexture('startButton') ;
             this.scene.start('Level1') ;
             startNotification.play()
+            MainMenuTheme.stop() ;
           }) ;
 
         MainMenuTheme.play() ; 

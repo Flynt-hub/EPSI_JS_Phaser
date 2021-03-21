@@ -8,13 +8,16 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         this.mPhaserContext.physics.world.enableBody( this, 0 ) ;
         this.setCollideWorldBounds(true);
 
-        this.mIsHitting = false ;
+        this.mIsHitting   = false ;
         this.mIsSuffering = false ;
         this.setData( "isAlive", true ) ;
         this.setData( "moveVelocity", 160 ) ;
         this.setData( "jumpVelocity", -450 ) ;
 
-        this.mWhooshCounter = 3 ;
+        this.mWhooshCounter = 3 ; // used to get sword attack sounds
+
+        this.mHealthBar = new HudManager( pPhaserContext ) ;
+        this.mHealthBar.showHealthBar( this.x, this.y ) ;
     }
     moveLeft() 
     {
@@ -90,6 +93,14 @@ class Actor extends Phaser.Physics.Arcade.Sprite
         console.log( this.getData('isAlive') ) ;
         this.anims.play( this.getData('name') + 'Dying', true ) ;
         this.on( 'animationcomplete', () => { this.disableBody( true, false ) ; }, this ) ;
+    }
+    update()
+    {
+        if( this.body.touching.down )
+        {
+            this.body.velocity.x = 0 ;
+            if ( !this.mIsHitting ) { this.anims.play( this.getData( 'name' ) + 'Idle' , true ) ; }
+        }
     }
 }
 
