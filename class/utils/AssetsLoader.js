@@ -118,7 +118,7 @@ class AssetsLoader
     }
     loadLevel1Audios()
     {
-        this.mPhaserContext.load.audio('level1Theme', './assets/music/BRPG_Hell_Spawn_FULL_Loop.wav') ;
+        this.mPhaserContext.load.audio('level1Theme', './assets/music/BRPG_Assault_Rhythm_Loop.wav') ;
         this.mPhaserContext.load.audio('swordHit1', './assets/music/sword_hit_impact_01.wav') ;
         this.mPhaserContext.load.audio('swordWhoosh1', './assets/music/PP_Whoosh_1_1.wav') ;
         this.mPhaserContext.load.audio('swordHit2', './assets/music/sword_hit_impact_02.wav') ;
@@ -126,5 +126,13 @@ class AssetsLoader
         this.mPhaserContext.load.audio('swordHit3', './assets/music/sword_hit_impact_03.wav') ;
         this.mPhaserContext.load.audio('swordWhoosh3', './assets/music/PP_Whoosh_1_3.wav') ;
         this.mPhaserContext.load.audio('swordHit4', './assets/music/sword_hit_impact_04.wav') ;
+    }
+    loadLostAssets()
+    {
+        this.mPhaserContext.load.image( 'LostBackground', 'assets/Gui/die.jpg' ) ;
+    }
+    loadWinAssets()
+    {
+        this.mPhaserContext.load.image( 'WinBackground', 'assets/Gui/Win.jpg' ) ;
     }
 }

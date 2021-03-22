@@ -3,7 +3,7 @@ class Enemy extends Actor
     constructor( pPhaserContext, pX, pY, pKey, pFrame, pName )
     {
         super( pPhaserContext, pX, pY, pKey, pFrame ) ;
-        this.setData( 'healthPoint', 40 ) ;
+        this.setData( 'healthPoint', 100 ) ;
         this.setData( 'name', pName ) ;
         this.displayWidth  = 100 ;
         this.displayHeight = 100 ;

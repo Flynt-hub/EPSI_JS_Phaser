@@ -1,7 +1,0 @@
-class GameCore
-{
-    constructor()
-    {
-        
-    }
-}

@@ -19,14 +19,14 @@ var config = {
         arcade: 
         {
             gravity: { y: 300 },
-            debug: true // make box colliders appears, add direction/speed vector to every model and stop every animation
+            debug: false // make box colliders appears, add direction/speed vector to every model and stop every animation
         }
     },
     scene: 
     [
         MainMenu,
         Level1,
-        //SceneEnd
+        //End
     ],
     audio: 
     {

@@ -136,8 +136,8 @@ class Level1 extends Phaser.Scene
         else if ( this.mKeyRight.isDown ) { this.GameManager.getPlayer().moveRight() ; }
         else if ( !this.GameManager.getPlayer().mIsSuffering ) { this.GameManager.getPlayer().update() ; }
         if( this.GameManager.getMummy().getData( "isAlive" ) ) { this.GameManager.getMummy().AI( this.GameManager.getPlayer(), this.mImportantAiMapPoints ) ; }
-        this.GameManager.getPlayer().updateHealthBar() ;
-        this.GameManager.getMummy().updateHealthBar() ;
+        this.GameManager.getPlayer().updateHealthBar( -75, -460 ) ;
+        this.GameManager.getMummy().updateHealthBar( -725, -260 ) ;
     }
 
     setPlatform()

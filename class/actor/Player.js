@@ -13,15 +13,4 @@ class Player extends Actor
         this.body.setGravityY(300) ;
         this.body.setSize( 340, 550 ) ;        
     }
-    onDestroy()
-    {
-        this.scene.time.addEvent( {
-          delay: 50,
-          callback: function() {
-            this.scene.scene.start( "SceneEnd" ) ;
-          },
-          callbackScope: this,
-          loop: false
-        } ) ;
-    }
 }

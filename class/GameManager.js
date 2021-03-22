@@ -28,8 +28,16 @@ class GameManager
                 break ;
             case 'mainMenuTheme':
                 this.mAssetsLoader.loadMainMenuTheme() ;
+                break ;
             case 'level1Audios':
                 this.mAssetsLoader.loadLevel1Audios() ;
+                break ;
+            case 'Lost':
+                this.mAssetsLoader.loadLostAssets() ;
+                break ;
+            case 'Win':
+                this.mAssetsLoader.loadWinAssets() ;
+                break ;
             default:
                 break;
         }

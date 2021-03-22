@@ -12,10 +12,11 @@ class MainMenu extends Phaser.Scene
     }
     create()
     {
-        let MainMenuTheme = this.sound.add( 'mainMenuTheme', { loop: true, volume: 0.5} ) ;
+        let MainMenuTheme     = this.sound.add( 'mainMenuTheme', { loop: true, volume: 0.5} ) ;
         let startNotification = this.sound.add( 'startNotification', { loop: false, volume: 0.5} ) ;
 
-        this.add.image( 400, 170, 'mainMenuBackground' ) ;  
+        let lBackground = this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'mainMenuBackground' ) ;  
+        lBackground.setScale(0.5) ;
         this.start = this.add.sprite( this.game.config.width * 0.5,
                                       this.game.config.height * 0.50,
                                       'startButton' ) ;  
