@@ -3,7 +3,6 @@ class GameManager
     constructor( pPhaserContext )
     {
         this.mAssetsLoader    = new AssetsLoader( pPhaserContext ) ;
-        this.mActorManager    = new ActorManager( pPhaserContext ) ;
         this.mIsPlayerCreated = false ;
         this.mIsMummyCreated  = false ;
         this.mPhaserContext   = pPhaserContext ;   

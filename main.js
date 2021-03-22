@@ -26,7 +26,8 @@ var config = {
     [
         MainMenu,
         Level1,
-        //End
+        Lost,
+        Win
     ],
     audio: 
     {

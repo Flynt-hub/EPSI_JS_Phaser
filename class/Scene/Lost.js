@@ -11,7 +11,7 @@ class Lost extends Phaser.Scene
     }
     create()
     {
-        let lBackground = this.add.image( 400, 170, 'LostBackground' ) ;
+        let lBackground = this.add.image( this.sys.canvas.width/2, this.sys.canvas.height/2, 'LostBackground' ) ;
         lBackground.setScale( 0.5 ) ;
     }
 }

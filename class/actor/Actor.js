@@ -113,10 +113,11 @@ console.log(this.getData( 'healthPoint' ))
         const lIsPlayer = this.getData( 'name' ) === 'knight' ;
         if( lIsPlayer )
         {
-            this.mPhaserContext.scene.time.addEvent( {
+            this.mPhaserContext.time.addEvent( {
                 delay: 200,
                 callback: function() {
-                  this.mPhaserContext.scene.start( "End" ) ;
+                    this.mPhaserContext.sound.sounds[2].stop() ;
+                    this.mPhaserContext.scene.start( "End" ) ;
                 },
                 callbackScope: this,
                 loop: false
@@ -127,8 +128,8 @@ console.log(this.getData( 'healthPoint' ))
             this.mPhaserContext.time.addEvent( {
                 delay: 200,
                 callback: function() {
-                    debugger ;
-                  this.mPhaserContext.scene.start( "Win" ) ;
+                    this.mPhaserContext.sound.sounds[2].stop() ;
+                    this.mPhaserContext.scene.start( "Win" ) ;
                 },
                 callbackScope: this,
                 loop: false
