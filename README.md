@@ -1,6 +1,7 @@
 # EPSI_JS_Phaser
 little JS project to discover Phaser framework
 
+after launching the game, use arrows to move and key 'E' to attack
 
 génération du index.html
 
